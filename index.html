@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Національний мультипредметний тест 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <style>
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+    body { margin: 0; background: #fff; color: #333; }
+
+    /* АНІМАЦІЇ */
+    .btn-login, .btn-finish, .btn-save, .sub-btn, .nav-num, .eye-square, .btn-red, .btn-start-final, .modal-btn {
+      transition: all 0.2s ease-in-out !important;
+      cursor: pointer;
+    }
+    .btn-login:hover, .btn-finish:hover, .btn-red:hover, .btn-start-final:hover, .eye-square:hover { filter: brightness(0.85); }
+    .btn-login:active, .btn-finish:active, .btn-red:active, .btn-start-final:active { transform: scale(0.96); }
+    .btn-save { transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease, border 0.4s ease !important; }
+
+    /* ШАПКА АВТОРИЗАЦІЇ */
+    .auth-header { padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; background: #fff; }
+    .user-info { display: flex; align-items: center; gap: 10px; color: #666; font-size: 0.9rem; }
+    .user-icon { width: 30px; height: 30px; background: #eee; border: 1px solid #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    /* ВЕРХНЯ ПАНЕЛЬ */
+    .top-bar-branding {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: #fff;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .logo-container img { height: 40px; display: block; }
+    .user-name-wrapper { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 5px; }
+    .user-name-display { font-size: 0.9rem; font-weight: 500; color: #333; }
+
+    /* СЛАЙД 1: ВХІД */
+    #auth-page { display: flex; flex-direction: column; min-height: 100vh; }
+    .auth-body { flex: 1; display: flex; justify-content: center; align-items: center; background: #fcfcfc; }
+    .login-container { width: 340px; border: 1px solid #fff; padding: 30px; border-radius: 8px; background: white; }
+    .login-container h2 { color: #c1153e; font-weight: 500; margin-bottom: 25px; margin-top: 0; }
+    .input-field { margin-bottom: 15px; }
+    .input-field label { display: block; font-size: 0.8rem; color: #777; margin-bottom: 4px; }
+    .input-field input { width: 100%; padding: 10px; border: 1px solid #bbb; border-radius: 4px; font-size: 1rem; outline: none; }
+    .btn-login { background: #c1153e; color: white; border: none; padding: 12px 30px; border-radius: 4px; font-weight: 700; width: 100%; }
+
+    /* СЛАЙД: ПРАВИЛА ТА ПРАВА */
+    #rules-page { display: none; flex-direction: column; min-height: 100vh; background: #fff; }
+    .rules-content { max-width: 1000px; margin: 30px auto; padding: 20px; }
+    .rules-box { background: #eee; padding: 30px; border-radius: 4px; color: #444; line-height: 1.6; font-size: 0.95rem; max-height: 60vh; overflow-y: auto; margin-bottom: 30px; }
+    .rules-box h3 { text-align: center; margin-top: 0; color: #333; }
+    .rules-footer { display: flex; justify-content: flex-end; }
+    .btn-accept { background: #ff0000; color: white; border: none; padding: 12px 25px; font-weight: 700; border-radius: 4px; }
+
+    /* СЛАЙД 2: ПІДТВЕРДЖЕННЯ */
+    #confirm-page { display: none; flex-direction: column; min-height: 100vh; }
+    .confirm-content { padding: 80px 60px; display: flex; flex-direction: column; align-items: center; }
+    .confirm-title { width: 100%; max-width: 850px; margin-bottom: 25px; font-size: 1.5rem; font-weight: 900; color: #444; text-align: left; letter-spacing: 0.5px; text-transform: uppercase; }
+    .test-banner { display: flex; border: 1px solid #bbb; width: 100%; max-width: 850px; height: 150px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); background: #fff; }
+    .banner-red { background: #f04b5c; width: 160px; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3.5rem; }
+    .banner-info { flex: 1; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; }
+    .btn-red { background: #c1153e; color: white; border: none; padding: 12px 25px; border-radius: 4px; font-weight: 700; text-transform: uppercase; }
+
+    /* СЛАЙД 3: ПЕРЕДЗАПУСК */
+    #pre-start-page { display: none; flex-direction: column; min-height: 100vh; }
+    .pre-content { padding: 40px 50px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .test-selection-box { border: 1px solid #bbb; padding: 30px; border-radius: 4px; margin-top: 20px; position: relative; background: #fff; }
+    .test-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .btn-start-final { background: #c1153e; color: white; border: none; padding: 12px 25px; border-radius: 6px; font-weight: 500; font-size: 1rem; }
+    .demo-label { color: #c1153e; font-weight: 500; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-top: 20px; display: flex; align-items: center; gap: 8px; }
+
+    /* СЛАЙД ІНСТРУКЦІЇ */
+    #instruction-page { display: none; flex-direction: column; min-height: 100vh; }
+    .instr-container { max-width: 1200px; margin: 20px auto; width: 95%; border: 1px solid #ccc; padding: 40px; background: #fff; }
+    .instr-main-box { background: #f1f6fa; border: 1px solid #d1d7dd; padding: 30px; position: relative; }
+    .instr-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; }
+    .instr-text { line-height: 1.6; font-size: 1rem; color: #333; margin-bottom: 20px; }
+    .btn-start-work-link { color: #c1153e; font-weight: 700; text-decoration: underline; cursor: pointer; font-size: 1.05rem; display: inline-block; margin-top: 10px; }
+
+    /* СЛАЙД 4: ГОЛОВНИЙ ТЕСТ */
+    #test-page { display: none; background: #fff; min-height: 100vh; flex-direction: column; align-items: center; }
+    .header-area { background: #d1d7dd; border: 1px solid #b8bec4; padding: 20px; width: 96%; max-width: 1360px; margin: 15px auto; border-radius: 12px; display: flex; justify-content: center; position: sticky; top: 10px; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .content-max-width { width: 100%; max-width: 1400px; margin: 0 auto; }
+    .instruction-text { border: 1px solid #d1d7dd; border-left: 5px solid #c1153e; padding: 15px; font-size: 0.9rem; line-height: 1.4; color: #333; margin-bottom: 20px; background: #d1d7dd; border-radius: 4px; }
+    .instruction-text strong { color: #c1153e; font-weight: 700; }
+    .hide-btn { color: #c1153e; text-decoration: underline; cursor: pointer; }
+    .top-controls { display: flex; justify-content: flex-end; align-items: center; gap: 25px; }
+    .btn-finish { background: #c1153e; color: white; border: none; padding: 10px 40px; border-radius: 30px; font-weight: 700; font-size: 1rem; }
+    .timer-group { display: flex; align-items: center; gap: 12px; }
+    .timer-num { font-weight: 700; font-size: 1.4rem; color: #000; min-width: 90px; }
+    .timer-num.hidden { opacity: 0; }
+    .eye-square { background: #c1153e; color: white; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 1.2rem; }
+    .white-section { background: #fff; width: 100%; display: flex; justify-content: center; border-bottom: 1px solid #ccc; }
+    .top-tabs { display: flex; gap: 25px; padding: 0 10px; }
+    .top-tab { padding: 14px 5px; font-size: 0.95rem; cursor: pointer; color: #555; border-bottom: 3px solid transparent; white-space: nowrap; }
+    .top-tab.active { color: #c1153e; border-bottom-color: #c1153e; font-weight: 700; }
+    .breadcrumb-row { padding: 15px 25px; display: flex; justify-content: space-between; color: #337ab7; font-size: 0.9rem; background: #fff; width: 100%; max-width: 1400px; border-bottom: 1px solid #ccc; }
+    .subject-switcher { display: flex; width: 100%; background: #fff; border-bottom: 1px solid #ccc; max-width: 1400px; }
+    .sub-btn { flex: 1; padding: 18px; border-right: 1px solid #ccc; text-align: center; font-size: 0.95rem; color: #666; }
+    .sub-btn.active { color: #c1153e; border-bottom: 3px solid #c1153e; font-weight: 700; }
+    .sub-btn.nav-arrows { color: #888; background: #fafafa; max-width: 100px; font-weight: bold; }
+    .main-layout { display: flex; padding: 25px; gap: 25px; width: 100%; max-width: 1400px; align-items: flex-start; }
+    .questions-stack { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .card { background: #fff; padding: 35px; border-radius: 4px; border: 1px solid #bbb; box-shadow: 0 1px 4px rgba(0,0,0,0.08); width: 100%; }
+    .intro-card { border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; margin-bottom: 25px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333; }
+    .radio-icon { display:inline-block; width:18px; height:18px; border:1px solid #337ab7; border-radius:50%; vertical-align:middle; margin: 0 4px; background: white; position: relative; top: -1px; }
+    .radio-icon.active { background: white; }
+    .radio-icon.active::after { content:''; position:absolute; top:4px; left:4px; width:8px; height:8px; background:#337ab7; border-radius:50%; }
+    .btn-save { background: #c1153e; color: white; border: 1px solid transparent; padding: 14px 35px; border-radius: 50px; font-weight: 700; text-transform: uppercase; font-size: 0.9rem; margin-top: 20px; }
+    .btn-save.saved { background: #eeeeee !important; color: #999 !important; border: 1px solid #ccc; cursor: default; }
+    .side-bar { width: 320px; position: sticky; top: 160px; }
+    .nav-card { background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #bbb; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    .nav-num { height: 50px; background: #fff; border: 1px solid #aaa; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 700; border-radius: 4px; }
+    .nav-num.red { background: #c1153e !important; color: white !important; border: 1px solid #c1153e; }
+    .option-item { display: flex; align-items: center; margin-bottom: 15px; cursor: pointer; font-size: 1.05rem; }
+    .option-item input { margin-right: 15px; transform: scale(1.3); }
+
+    /* МОДАЛЬНЕ ВІКНО ПЕРЕХОДУ */
+    #switch-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 5000; justify-content: center; align-items: center; }
+    .switch-modal-box { background: #e9e9e9; width: 600px; border-radius: 8px; overflow: hidden; border: 1px solid #999; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+    .switch-header { background: #c1153e; color: white; padding: 10px 15px; display: flex; justify-content: space-between; font-weight: 500; font-size: 1.1rem; }
+    .switch-body { padding: 20px; }
+    .switch-body-title { font-weight: 700; font-size: 1rem; margin-bottom: 15px; color: #333; }
+    .switch-unsaved-list-box { background: transparent; padding: 10px; max-height: 150px; overflow-y: auto; margin-bottom: 20px; border-radius: 4px; }
+    .switch-footer { padding: 15px 20px 25px 20px; display: flex; gap: 15px; justify-content: center; }
+    .btn-modal-red { background: #c1153e; color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: 500; }
+    .btn-modal-white { background: #fff; color: #c1153e; border: 1px solid #c1153e; padding: 12px 25px; border-radius: 5px; font-weight: 500; }
+
+    /* МОДАЛЬНЕ ВІКНО ЗАВЕРШЕННЯ */
+    #finish-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+    .finish-modal { background: #f1f6fa; width: 100%; max-width: 900px; padding: 40px; border-radius: 4px; border: 1px solid #999; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .modal-title { font-weight: 700; font-size: 1.3rem; margin-bottom: 15px; color: #333; }
+    .modal-desc { font-size: 0.95rem; line-height: 1.5; color: #444; margin-bottom: 25px; }
+    .modal-btns { display: flex; gap: 15px; margin-bottom: 30px; }
+    .modal-btn { padding: 12px 25px; border-radius: 4px; font-weight: 500; }
+    .btn-confirm-finish { background: #c1153e; color: white; border: none; }
+    .btn-return { background: white; color: #c1153e; border: 1px solid #c1153e; }
+    .unsaved-box { border: 2px solid #c1153e; background: #fff; padding: 20px; position: relative; }
+    .unsaved-header { display: flex; align-items: center; gap: 10px; font-weight: 700; color: #333; margin-bottom: 10px; }
+    .icon-info { background: #c1153e; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+    .unsaved-list { padding-left: 32px; font-size: 0.95rem; color: #333; max-height: 250px; overflow-y: auto; }
+
+    /* РЕЗУЛЬТАТИ */
+    #result-page { display: none; flex-direction: column; min-height: 100vh; background: #fff; }
+    .result-content { padding: 40px 60px; max-width: 1300px; width: 100%; margin: 0 auto; position: relative; }
+    .res-breadcrumb { color: #337ab7; font-size: 0.95rem; margin-bottom: 30px; }
+    .res-title { font-size: 1.2rem; margin-bottom: 25px; color: #333; }
+    .res-table-wrapper { border: 2px solid #c1153e; position: relative; padding: 0; }
+    .res-info-icon { position: absolute; left: -35px; top: 15px; background: #c1153e; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; }
+    .res-table { width: 100%; border-collapse: collapse; }
+    .res-table th { background: #f5f5f5; border: 1px solid #bbb; padding: 15px; text-align: left; font-weight: 700; color: #333; font-size: 0.95rem; }
+    .res-table td { border: 1px solid #bbb; padding: 15px; font-size: 1rem; color: #333; }
+    .res-table .bg-green { background: #91e691; font-weight: 700; text-align: center; width: 120px; }
+    .res-footer { text-align: right; margin-top: 15px; font-size: 0.85rem; color: #888; }
+    .header-logo { height: 35px; display: block; }
+
+    /* ФОТО ЗАВДАННЯ */
+    .flex-q { display: flex; gap: 20px; align-items: flex-start; }
+    .text-q { flex: 1; }
+    .img-q img { max-width: 280px; border: 1px solid #eee; border-radius: 4px; }
+
+/* МЕХАНІКА ВІДПОВІДНОСТЕЙ - ВИПРАВЛЕНО */
+.matching-box-grey { 
+    border: 1px solid #ccc; background: #fdfdfd; padding: 20px; 
+    margin-bottom: 25px; font-size: 0.9rem; color: #333; line-height: 1.6; 
+}
+
+.matching-flex-container { 
+    display: flex; gap: 20px; margin-top: 20px; align-items: flex-start; 
+}
+
+.matching-left-area { 
+    flex: 2; background: #e0f2ff; border: 1px solid #bce0ff; border-radius: 8px; padding: 20px; 
+}
+
+.matching-right-area { 
+    flex: 1; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 20px; 
+}
+
+/* Рядок: тепер використовуємо grid, щоб ліва і права плашки були незалежними по висоті */
+.match-row { 
+    display: grid; 
+    grid-template-columns: 1fr 30px 1.2fr; 
+    gap: 10px; 
+    align-items: stretch; /* Розтягує плашки на однакову висоту в рядку */
+    margin-bottom: 15px; 
+}
+
+.matching-text-bubble { 
+    background: #fff; border: 1px solid #bce0ff; padding: 12px 15px; 
+    border-radius: 6px; font-size: 0.95rem; font-weight: 500;
+    display: flex; align-items: center; min-height: 45px;
+}
+
+.matching-arrow { 
+    color: #337ab7; font-weight: bold; font-size: 1.2rem; 
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* ПОЛЕ ВІДПОВІДІ - ТЕПЕР ГНУЧКЕ */
+.matching-drop-field { 
+    min-height: 45px; /* Мінімальна висота */
+    height: auto;     /* Дозволяє рамці рости вниз */
+    width: auto;      /* Прибираємо жорсткі 140px */
+    background: #fff; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 10px 35px 10px 12px; /* Місце справа для хрестика */
+    cursor: pointer; 
+    position: relative; 
+    word-break: break-word; /* Перенос довгих слів */
+}
+
+.matching-drop-field.active { 
+    border: 2px solid #337ab7; 
+    box-shadow: 0 0 5px rgba(51,122,183,0.3); 
+}
+
+.matching-val-text { 
+    font-weight: 500; color: #333; font-size: 0.95rem; line-height: 1.4; 
+}
+
+.matching-clear-btn { 
+    position: absolute; 
+    right: 8px; 
+    top: 10px; /* Завжди зверху, щоб не губитися в тексті */
+    color: #333; 
+    background: #eee;
+    border: 1px solid #999;
+    border-radius: 4px;
+    width: 20px; 
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.matching-opt-btn { 
+    background: #fff; border: 1px solid #81c784; padding: 12px; 
+    margin-bottom: 10px; border-radius: 6px; text-align: left; 
+    cursor: pointer; font-size: 0.95rem; font-weight: 500; width: 100%; 
+    line-height: 1.4;
+}
+
+    /* ВПИСУВАННЯ ВІДПОВІДІ */
+    .input-answer-box { margin-top: 20px; }
+    .answer-field-wrapper { background: #fff; width: 250px; padding: 10px; border-radius: 4px; display: flex; align-items: center; gap: 10px; margin-top: 20px; }
+    .input-q-field { border: 1px solid #bbb; padding: 8px; font-size: 1.1rem; width: 100%; outline: none; background: #fff; }
+    .input-q-field:focus { border-color: #c1153e; }
+	.flex-q { 
+      display: flex; 
+      gap: 20px; 
+      align-items: flex-start; 
+      margin-bottom: 25px; /* Додатковий відступ знизу */
+    }
+	
+	.matching-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.matching-label-left {
+    width: 65%;
+}
+
+.matching-label-right {
+    width: 30%;
+    text-align: center;
+}
+	
+	
+  </style>
+</head>
+<body>
+
+<div id="auth-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-info"><div class="user-icon">👤</div><div id="auth-user-name"></div></div>
+  </header>
+  <div class="auth-body">
+    <div class="login-container">
+      <h2>Увійти</h2>
+      <div class="input-field"><label>Логін</label><input type="text" id="login-input"></div>
+      <div class="input-field"><label>Пароль</label><input type="password" id="pass-input"></div>
+      <button class="btn-login" onclick="showRules()">Увійти</button>
+    </div>
+  </div>
+</div>
+
+<div id="rules-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-name-wrapper">
+      <div class="user-name-display"></div>
+      <span style="font-size: 0.7rem; color: #333;">▾</span>
+    </div>
+  </header>
+  <div class="rules-content">
+    <div class="rules-box">
+      <h3>Права та обов’язки учасників НМТ</h3>
+      1. Учасник НМТ має право на:<br>
+      1) доступ до інформації про:<br>
+      загальні характеристики сертифікаційних робіт (форми завдань, схеми нарахування балів за виконання завдань);<br>
+      терміни та порядок проведення НМТ;<br>
+      час і місце проведення НМТ;<br>
+      здійснення контролю за проведенням НМТ з використанням технічних пристроїв;<br>
+      порядок визначення, спосіб та терміни офіційного оголошення результатів НМТ;<br>
+      2) проходження НМТ з установленої Міністерством освіти і науки України кількості навчальних предметів;<br>
+      3) виконання сертифікаційних робіт, розроблених згідно з програмами зовнішнього незалежного оцінювання результатів навчання, здобутих на основі повної загальної середньої освіти, затвердженими наказами Міністерства освіти і науки України;<br>
+      4) виконання сертифікаційних робіт за завданнями, наданими в перекладі мовою корінного народу або національної меншини (з переліку мов, визначеного Міністерством освіти і науки України), якою здобув(ає) повну загальну середню освіту та яку зазначив під час реєстрації для участі в НМТ;<br>
+      5) ознайомитися з правилами проходження НМТ та роботи з програмним засобом, з використанням якого проводиться НМТ, розміщеними для ознайомлення в такому програмному засобі (далі - правила тестування), підтвердити в ньому факт ознайомлення з правилами тестування та дотримуватися їх;<br>
+      6) після завершення часу, відведеного на виконання сертифікаційної роботи, повернути надані в аудиторії працівником ТЕЦ аркуші паперу для власних записів та інші матеріали НМТ працівникам ТЕЦ.<br>
+      7) оскарження процедури проведення НМТ, рішень регламентних комісій (апеляцію).<br>
+      2. Учасник НМТ зобов’язаний:<br>
+      1) ознайомитися із цим Порядком, дотримуватися його вимог;<br>
+      2) своєчасно прибути до ТЕЦ, зазначеного в його запрошенні, з документом, що посвідчує особу, та сертифікатом національного мультипредметного тесту (далі - Сертифікат) (додаток 1);<br>
+      3) ввічливо ставитися до учасників НМТ і працівників ТЕЦ;<br>
+      4) виконувати вказівки та вимоги працівників ТЕЦ щодо процедури проходження НМТ;<br>
+      5) виконувати сертифікаційну роботу згідно з правилами, розміщеними для ознайомлення в програмному засобі, з використанням якого проводиться НМТ;<br>
+      6) після завершення часу, відведеного на виконання сертифікаційної роботи, повернути матеріали НМТ працівникам ТЕЦ.<br>
+      3. Учаснику НМТ заборонено:<br>
+      1) приносити до ТЕЦ небезпечні предмети або речовини, що становлять загрозу для життя та здоров’я людини;<br>
+      2) протягом часу, відведеного на виконання сертифікаційної роботи:<br>
+      порушувати правила виконання тестування;<br>
+      заважати іншим учасникам НМТ;<br>
+      спілкуватися в будь-якій формі з іншими учасниками НМТ під час виконання сертифікаційної роботи, отримувати від них чи передавати їм інформацію або матеріальні носії інформації;<br>
+      мати при собі або на своєму робочому місці засоби зв’язку, пристрої зчитування, обробки, збереження, приймання, передавання та відтворення інформації, а також окремі елементи, які можуть бути складовими частинами відповідних технічних засобів чи пристроїв, друковані або рукописні матеріали, інші засоби, предмети, прилади, що не передбачені процедурою НМТ (крім дозволених виробів медичного призначення, про наявність яких учасник НМТ повинен повідомити працівників ТЕЦ до початку виконання роботи);<br>
+      користуватися ресурсами мережі Інтернет, що не передбачені процедурою НМТ.<br>
+      4. У разі порушення однієї або кількох вимог, передбачених підпунктами 3-5 пункту 2, пунктом 3 цього розділу, учасник НМТ на вимогу осіб, відповідальних за організацію та проведення НМТ, має залишити ТЕЦ.<br>
+      3) копіювати (переписувати) завдання сертифікаційної роботи;<br>
+      4) виносити за межі аудиторії надані працівником ТЕЦ аркуші паперу для власних записів та інші матеріали НМТ;<br>
+      5) використовувати засоби зв’язку, пристрої зчитування, обробки, збереження, приймання, передавання та відтворення інформації під час перерви між етапами виконання сертифікаційної роботи та протягом часу перебування в укритті.
+    </div>
+    <div class="rules-footer">
+      <button class="btn-accept" onclick="showConfirm()">З правилами та правами ознайомився/ознайомилася</button>
+    </div>
+  </div>
+</div>
+
+<div id="confirm-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-name-wrapper">
+      <div class="user-name-display"></div>
+      <span style="font-size: 0.7rem; color: #333;">▾</span>
+    </div>
+  </header>
+  <div class="confirm-content">
+    <div class="confirm-title">ВСТУПНІ ВИПРОБУВАННЯ</div>
+    <div class="test-banner" style="margin-bottom: 20px;">
+      <div class="banner-red">🏛</div>
+      <div class="banner-info">
+        <div style="font-weight:700;">НМТ, 12.01.2026 РОКУ, 10:00 (1 ЕТАП)</div>
+        <button class="btn-red" onclick="showPreStart()">Перейти до тесту</button>
+      </div>
+    </div>
+    <div class="test-banner" style="margin-bottom: 20px;">
+      <div class="banner-red">🏛</div>
+      <div class="banner-info">
+        <div style="font-weight:700;">НМТ, 12.01.2026 РОКУ, 12:00 (2 ЕТАП)</div>
+        <button class="btn-red" style="background: #e21a43;" onclick="startSecondStage()">Перейти до тесту</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="pre-start-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-name-wrapper">
+      <div class="user-name-display"></div>
+      <span style="font-size: 0.7rem; color: #333;">▾</span>
+    </div>
+  </header>
+  <div class="white-section">
+    <div class="content-max-width">
+      <div class="top-tabs">
+        <div class="top-tab active">Іспит</div>
+        <div class="top-tab" onclick="openMathDocs()">Математика: довідкові матеріали</div>
+        <div class="top-tab">Інструкція</div>
+      </div>
+    </div>
+  </div>
+  <div class="pre-content">
+    <div class="test-selection-box">
+      <div class="test-title-row">
+        <div style="font-size: 1.3rem; color: #333; font-weight: 500;">НМТ, 12.01.2026 року, час початку: 10:00</div>
+        <button class="btn-start-final" onclick="showInstructionSlide()">Розпочати тест</button>
+      </div>
+      <div class="demo-label">▼ НМТ-2026_демоверсія</div>
+      <div style="padding-left: 25px; margin-top: 15px;">
+        <div style="color: #c1153e; font-size: 0.95rem; font-weight: 500;">НМТ-2026_демоверсія</div>
+        <div style="font-size: 0.85rem; color: #666; margin-top: 10px;">⏳ Тест з обмеженим часом</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="instruction-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-name-wrapper">
+      <div class="user-name-display"></div>
+      <span style="font-size: 0.7rem; color: #333;">▾</span>
+    </div>
+  </header>
+  <div class="white-section">
+    <div class="content-max-width">
+      <div class="top-tabs">
+        <div class="top-tab active">Іспит</div>
+        <div class="top-tab" onclick="openMathDocs()">Математика: довідкові матеріали</div>
+        <div class="top-tab">Інструкція</div>
+      </div>
+    </div>
+  </div>
+  <div class="instr-container">
+    <div class="instr-main-box">
+      <div class="instr-title">Тест "НМТ-2026_демоверсія" (1 Етап) обмежений у часі (2 години).</div>
+      <div class="instr-text">
+        Національний мультипредметний тест (НМТ) містить завдання з кількох навчальних предметів. Ви можете самі розподіляти час між предметами, головне — стежте за таймером, який показує, скільки залишилося хвилин до завершення роботи над НМТ.<br><br>
+        Як тільки Ви натиснете на кнопку «Розпочати роботу над тестом», автоматично розпочнеться відлік часу, відведеного на виконання тестових завдань.
+      </div>
+      <div class="btn-start-work-link" onclick="startTest()">Розпочати роботу над тестом ➔</div>
+    </div>
+  </div>
+</div>
+
+<div id="test-page">
+  <div style="background: #fff; width: 100%; border-bottom: 1px solid #ccc;">
+    <div class="top-bar-branding">
+      <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО"></div>
+      <div class="user-name-wrapper">
+        <div class="user-name-display"></div>
+        <span style="font-size: 0.7rem; color: #333; cursor: pointer;">▾</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="header-area">
+    <div class="content-max-width">
+      <div class="instruction-text" id="info-panel">
+        <strong>НМТ-2026_демоверсія</strong> обмежений у часі. Таймер праворуч показує, скільки хвилин залишилося до кінця роботи. Вибравши відповідь на завдання, не забудьте натиснути на "Зберегти відповідь" для кожного завдання. Якщо Ви цього не зробите, відповідь не буде збережено і зараховано. Перш ніж натиснути на "Завершити роботу над тестом", перевірте, чи зберегли всі надані відповіді. <span class="hide-btn" onclick="document.getElementById('info-panel').style.display='none'">Сховати</span>
+      </div>
+      <div class="top-controls">
+        <button class="btn-finish" onclick="showFinishModal()">Завершити роботу над тестом</button>
+        <div class="timer-group">
+          <div class="timer-num" id="clock-val">2:00:00</div>
+          <div class="eye-square" onclick="document.getElementById('clock-val').classList.toggle('hidden')">👁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="white-section">
+    <div class="content-max-width">
+      <div class="top-tabs">
+        <div class="top-tab active">Іспит</div>
+        <div class="top-tab" onclick="openMathDocs()">Математика: довідкові матеріали</div>
+        <div class="top-tab">Інструкція</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#fff; width:100%; display:flex; flex-direction:column; align-items:center;">
+    <div class="breadcrumb-row">
+      <div id="path-text">Іспит &nbsp;›&nbsp; НМТ-2026_демоверсія &nbsp;›&nbsp; Українська мова</div>
+      <div style="cursor:pointer; font-size: 1.2rem; color: #888;">⤧</div>
+    </div>
+    <div class="subject-switcher" id="sub-switcher-area">
+      </div>
+  </div>
+
+  <div class="main-layout">
+    <div class="questions-stack" id="q-list"></div>
+    <aside class="side-bar">
+      <div class="nav-card">
+        <div style="font-weight: 700; font-size: 1.1rem; color: #333;">Завдання</div>
+        <div class="nav-grid" id="n-grid"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div id="switch-overlay">
+  <div class="switch-modal-box">
+    <div class="switch-header"><span>Попередження</span><span style="cursor:pointer; font-size:1.5rem;" onclick="closeSwitchModal()">×</span></div>
+    <div class="switch-body">
+      <div class="switch-body-title">Не надано та/або не збережено відповіді до таких завдань:</div>
+      <div class="switch-unsaved-list-box" id="switch-unsaved-list"></div>
+    </div>
+    <div class="switch-footer">
+      <button class="btn-modal-red" onclick="closeSwitchModal()">Повернутись до виконання</button>
+      <button class="btn-modal-white" id="btn-force-switch">Перейти далі</button>
+    </div>
+  </div>
+</div>
+
+<div id="finish-overlay">
+  <div class="finish-modal">
+    <div class="modal-title">Ви впевнені, що бажаєте завершити роботу над тестом?</div>
+    <div id="unsaved-list-count" style="margin-bottom:20px; color:#c1153e;"></div>
+    <div class="modal-btns">
+      <button class="btn-confirm-finish modal-btn" onclick="goToResults()">Так, завершити роботу</button>
+      <button class="btn-return modal-btn" onclick="closeFinishModal()">Ні, повернутися до виконання завдань</button>
+    </div>
+    <div class="unsaved-box" id="unsaved-container">
+      <div class="unsaved-header"><div class="icon-info">i</div>Не надано та/або не збережено відповіді:</div>
+      <div class="unsaved-list" id="unsaved-list-inner"></div>
+    </div>
+  </div>
+</div>
+
+<div id="result-page">
+  <header class="auth-header">
+    <div class="logo-container"><img src="img/nmt-logo.png" alt="УЦОЯО" class="header-logo"></div>
+    <div class="user-name-wrapper" onclick="returnToSelection()" style="cursor: pointer;">
+        <div class="user-name-display"></div>
+        <span style="font-size: 0.7rem; color: #333;">▾</span>
+    </div>
+  </header>
+  <div class="result-content">
+    <div class="res-breadcrumb">Іспит › Національний мультипредметний тест › НМТ</div>
+    <div class="res-title" style="font-weight: 700;">Ви дочасно завершили роботу над тестом.</div>
+    <div class="res-table-wrapper">
+      <div class="res-info-icon">i</div>
+      <table class="res-table">
+        <thead><tr><th>Назва навчального предмета</th><th>Надано та збережено відповідей</th><th>Тестовий бал</th></tr></thead>
+        <tbody id="res-body"></tbody>
+      </table>
+    </div>
+    <div class="res-footer">© Всі права захищено</div>
+  </div>
+</div>
+
+<script>
+  const users = [
+    { login: "4208315", pass: "2d9k405", name: "Пушкар Максим" },
+    { login: "1729406", pass: "nb671x2", name: "Вуйцик Вероніка Ігорівна" },
+    { login: "8835124", pass: "m99p31a", name: "Клименко Юлія Сергіївна" },
+    { login: "5061732", pass: "rt042v8", name: "Шевченко Артем Вікторович" },
+    { login: "2947150", pass: "kw455s1", name: "Бондар Оксана Миколаївна" }
+ ];
+
+  const data = {
+    ukr: [
+      { id: 1, type: 'choice', text: "Прочитайте речення (цифра позначає наступне слово). <br><br> У <b>(1)дов<u>і</u>днику</b> були не тільки правила, але й письмові <b>(2)завданн<u>я</u></b> за <b>(3)нов<u>и</u>м</b> правописом, і <b>(4)доньк<u>а</u></b> наполегливо просила його купити для <b>(5)навч<u>а</u>ння</b>; тому довелося їхати в крамницю за два <b>(6)кв<u>а</u>ртали</b>, щоб виконати <b>(7)обіц<u>я</u>нку</b> й <b>(8)прин<u>е</u>сти</b> книжку вчасно. <br><br> НЕПРАВИЛЬНО виділено букви на позначення наголошених голосних у всіх словах, позначених цифрами:", opts: ["1, 4, 5, 8", "2, 3, 6, 7", "2, 4, 6, 8", "3, 5, 6, 8"], correct: 2, saved: false, selected: null },
+	  { id: 2, type: 'choice', text: "Дотримано правил уживання великої букви в рядку:", opts: ["Будинок письменника, Національна Академія Наук України, дон Педро, сузір’я Великої Ведмедиці", "Людвіг ван Бетховен, Міністерство Культури України, харків'янин, Імператор Візантії", "Друга світова війна, Полтавська битва, Ренесанс, День Незалежності України", "проспект Свободи, річка Південний Буг, Кримський Півострів, шевченківська хата"], correct: 2, saved: false, selected: null },
+      { id: 3, type: 'choice', text: "Суфікс <b>-уват- (-юват-)</b> має однакове значення в усіх словах, ОКРІМ:", opts: ["білуватий", "злодійкуватий", "синюватий", "круглуватий"], correct: 1, saved: false, selected: null },
+      { id: 4, type: 'choice', text: "З дефісом треба писати всі складні слова в рядку:", opts: ["коренево/суфіксальний, корене/вмісний, корене/подібний", "ідейно/політичний, ідейно/виховний, ідейно/художній", "ніжно/блакитний, ніжно/лиций, ніжно/колірний", "кисло/солоний, кисло/молочний, кислото/стійкий"], correct: 1, saved: false, selected: null },
+      { id: 5, type: 'choice', text: "М'який знак на місці пропуску треба писати в усіх словах рядка, ОКРІМ:", opts: ["по-товарис..кому, дон..ці, свіжісін..кий, сяд..те", "кін..кий, гуцул..ський, долен..ці, жен..шень", "брин..чати, уманс..кий, у скрин..ці, їдал..ня", "голівон..ці, спрац..ований, Уман..щина, чотир..ох"], correct: 3, saved: false, selected: null },
+	  { id: 6, type: 'choice', text: "Однаковий звук позначають букви, виділені в окремих словах речення:", opts: ["Людям здавало<b><u>с</u></b>я, що правди вже ніколи не буде, <b><u>с</u></b>праведливо<b><u>с</u></b>ті чекати не <b><u>с</u></b>лід.", "Ви <b><u>з</u></b>араз, <b><u>з</u></b>вичайно, можете <b><u>з</u></b>мінити своє ставлення до мене.", "Усі кві<b><u>т</u></b>и: соняхи, кульбабки, волошки — тягну<b><u>т</u></b>ься до нашого життєдайного сві<b><u>т</u></b>ла.", "Віра, на<b><u>д</u></b>ія, любов — це справ<b><u>д</u></b>і непо<b><u>д</u></b>ільні супутники буття людського."], correct: 3, saved: false, selected: null },
+      { id: 7, type: 'choice', text: "Літеру <b>с</b> на місці пропуску потрібно писати в усіх словах рядка:", opts: ["..хибити, ..цілити, ..формувати", "..тирати, ..жити, ..кидати", "..пекти, ..хитрувати, ..простити", "..клеїти, ..шити, ..фотографувати"], correct: 2, saved: false, selected: null },
+      { id: 8, type: 'choice', text: "НЕМАЄ орфографічних помилок у варіанті:", opts: ["У ці теплі воскові дні, пронизанні сонцем, обличчя людей світилися лагідним сяйвом осені; у парках бродили зачаровані фотографи, ловили об’єктивом верхівки тополь.", "Фотографи вибирали кадр для запізнілого жучка-сонечка на розімлілому стеблі чубатої айстри чи напів розлущеного каштана, якому пощастило втриматися на гілці і грайливо підморгнути роскиданим по землі родичам.", "В іншому кутку чисто-вибілена піч, що берегла родинне вогнище, від неї доносився запах сіна, м’яти, а ще духм’яних паляниць і пухких пасок.", "Тихо німували на стінах мамині рушники, дбайливо припасовані до образів; посередині хати – ясеновий стіл, покритий доморобною чистою скатертиною."], correct: 3, saved: false, selected: null },
+      { id: 9, type: 'choice', text: "Подвоєні букви треба писати в усіх словах рядка:", opts: ["гречан..ий, страшен..ий, антен..ий", "від..аний, бездоган..ий, клятвен..ий", "електрон..ий, благословен..ий, склян..ий", "роз..броїти, священ..ий, безімен..ий"], correct: 3, saved: false, selected: null },
+      { id: 10, type: 'choice', text: "Лексична помилка є в рядку:", opts: ["запущений вигляд", "стати в пригоді", "цивільний шлюб", "зіставити факти"], correct: 0, saved: false, selected: null },
+	  { id: 11, type: 'choice', text: "Редагування потребує речення:", opts: ["Вітри північні тремтять, затихаючи між кущами лавровими.", "Ідуть по Хрещатику люди щільно, як у черзі, майже притулившись один до одного.", "Втративши кордон чи державність, народ завжди має можливість їх відновити, а мови не відновить ніколи: вона втратиться на віки вічні.", "Старий воєвода вважав, що не може його дочка, живучи серед повстанців, не навчитися того, що вміють вони.", "Відпочиваючи в Карпатах, соснові ліси напувають тебе цілющою силою."], correct: 4, saved: false, selected: null },
+      { id: 12, type: 'choice', text: "Правильно розставлено розділові знаки при прямій мові в реченні:", opts: ["«Мотре! Хто це тобі купив таке гарне намисто?», – спитав Карпо.", "«Веди ж нас, Василю, до пана, – каже полковник Шрам. – Де він? Чи в світлиці, чи в пасіці?»", "«Нащо ви одв’язали нашого коня та заперли в свій хлів? – крикнула Мотря: Не святі ж прийшли з неба та одв’язали його!»", "Запала тиша, як в страшному сні, Горбань сказав – «Причому тут пісні?»", "«Ти, Сергію, – виказую. – хоч би раз прийшов вчасно. Завжди тебе чекати треба»."], correct: 1, saved: false, selected: null },
+      { id: 13, type: 'choice', text: "НЕ мають закінчення обидва слова в рядку:", opts: ["авто, ножиці", "обіцяючи, трюмо", "написавши, дно", "відчинено, молодь", "небезпечно, вікно"], correct: 1, saved: false, selected: null },
+      { id: 14, type: 'choice', text: "Українським відповідником іншомовного слова <b>дидактичний</b> є:", opts: ["повчальний", "розважальний", "теоретичний", "риторичний", "емоційний"], correct: 0, saved: false, selected: null },
+	  { id: 15, type: 'choice', text: "Прочитайте речення (цифра позначає попередній розділовий знак). <br><br> <i>Колись у дитинстві йому снилися сни<b>:(1)</b> він тримав у руках жар-птицю<b>,(2)</b> а потім<b>,(3)</b> прокинувшись<b>,(4)</b> він навіть відчував на долонях дотик золотого<b>,(5)</b> сліпучого пір’я<b>,(6)</b> але тануло останнє марево сну, згодом приходила до нього сумна впевненість<b>,(7)</b> що ніякої жар-птиці не було<b>,(8)</b> що все це привиділося.</i> <br><br> НЕПРАВИЛЬНО обґрунтовано вживання розділових знаків у рядку:", opts: ["двокрапка 1 – між частинами складного речення, що поєднані безсполучниковим зв’язком", "коми 2, 6 – між частинами складного речення, що поєднані сурядним зв’язком", "коми 3, 4 – кома при відокремленій обставині", "кома 5 – при відокремленому означенні", "коми 7, 8 – між частинами складного речення, що поєднані підрядним зв’язком"], correct: 3, saved: false, selected: null },
+      { id: 16, type: 'choice', text: "Шановний ________ , підкажіть, скільки коштує ________ какаду і який корм буде для нього ________ ?</i>", opts: ["добродіє, рожевий, найбільш корисним", "добродію, рожевий, найбільш кориснішим", "добродію, рожеве, найбільш корисним", "добродій, рожевий, найкориснішим", "добродію, рожевий, найбільш корисним"], correct: 4, saved: false, selected: null },
+      { id: 17, type: 'choice', text: "Гуляючи в парку ________ , ми зустріли свого колишнього викладача Сергія ________ , якого не бачили півтора ________ .</i>", opts: ["по алеях, Григорійовича, року", "по алеям, Григоровича, роки", "алеями, Григорійовича, року", "по алеях, Григоровича, року", "по алеях, Григоровича, роки"], correct: 3, saved: false, selected: null },
+      { id: 18, type: 'choice', text: "Цей ________ став мені ________ , бо вирішив нарешті прибрати в кухні ________ .</i>", opts: ["засіб для миття, в нагоді, до пуття", "миючий засіб, в пригоді, до пуття", "мийний засіб, в нагоді, толком", "мийний засіб, в пригоді, толком", "засіб для миття, в пригоді, до пуття"], correct: 4, saved: false, selected: null },
+	  { id: 19, type: 'choice', text: "________ , зустрінемося ________ біля кінотеатру ________ .</i>", opts: ["Насте, за чверть дев’ята, під відкритим небом", "Настя, за чверть дев’ята, просто неба", "Насте, за чверть дев’ята, просто неба", "Насте, за чверть до дев’яти, просто неба", "Настю, без чверті дев’ять, просто неба"], correct: 2, saved: false, selected: null },
+      { id: 20, type: 'choice', text: "Сьогодні ми ________ договір ________ продуктів харчування для студентського ________ .</i>", opts: ["підписали, на закупівлю, хабу", "заключили, на закупівлю, хабу", "заключили, на закупівлю, хаба", "уклали, на купівлю, хабу", "підписали, на закупівлю, хаба"], correct: 0, saved: false, selected: null },
+      { id: 21, type: 'choice', text: "Первісний текст буде відновлено, якщо речення розташувати в послідовності, запропонованій у рядку:", opts: ["○ □ ◇ ∇ Δ", "○ Δ □ ∇ ◇", "○ ◇ Δ □ Δ", "○ □ ∇ ◇ Δ", "○ ∇ Δ □ ◇"], correct: 1, saved: false, selected: null },
+	  { id: 22, type: 'choice', text: "Пунктуаційну помилку допущено в реченні:", opts: ["Δ", "○", "◇", "□", "∇"], correct: 3, saved: false, selected: null },
+      { id: 23, type: 'choice', text: "Підметом є виділене слово:", opts: ["простори", "хаби", "послуги", "час", "заняття"], correct: 1, saved: false, selected: null },
+      { id: 24, type: 'choice', text: "Відокремленим узгодженим означенням ускладнено речення:", opts: ["Δ", "○", "◇", "□", "∇"], correct: 1, saved: false, selected: null },
+      { id: 25, type: 'choice', text: "Односкладним безособовим є речення:", opts: ["Δ", "○", "◇", "□", "∇"], correct: 0, saved: false, selected: null },
+	  { id: 26, type: 'match', text: "Доберіть до кожного фразеологізму (1–4) синонім (А – Д).", rows: ["де козам роги правлять", "хоч греблю гати", "замилити очі", "клинці підбивати"], cols: ["напустити туману", "де Макар телят пасе", "і свині не їдять", "п'яте через десяте", "підкочуватися бубликом"], correct: [1, 2, 0, 4], saved: false, selected: [null, null, null, null] },
+      { id: 27, type: 'match', text: "З’ясуйте, якою частиною мови (А – Д) є виділені в реченні слова (1–4). <br><br> <i>Нещасна, <b>(1)неправдива</b> людина, <b>(2)що</b> <b>(3)добровільно</b> й легко зрікається рідної мови; щаслива, праведна людина, що <b>(4)в</b> радості й горі будує слово своєї землі.</i>", rows: ["неправдива", "що", "добровільно", "в"], cols: ["прикметник", "прислівник", "займенник", "прийменник", "сполучник"], correct: [0, 2, 1, 3], saved: false, selected: [null, null, null, null] },
+      { id: 28, type: 'match', text: "Доберіть приклад (А – Д) до кожної умови вживання тире (1–4).", rows: ["тире між підметом і присудком", "тире перед узагальнювальним словом", "тире при відокремленій прикладці", "тире між частинами безсполучникового речення"], cols: ["Довго набирав швидкість старенький автомобіль – наш дім на колесах.", "Краса людська – поняття містке.", "Ні шалена спека, ні голод, ні поневіряння – ніщо не виводило його з рівноваги.", "Попадавсь їм багач у руки – вони його оббирали, попадався вбогий – вони його наділяли.", "Було, як заговорить або засміється – і старому веселіше стане."], correct: [1, 2, 0, 3], saved: false, selected: [null, null, null, null] },
+	  { id: 29, type: 'match', text: "Доберіть приклад (А – Д) до кожного типу складного речення (1–4).", rows: ["складносурядне", "складнопідрядне", "безсполучникове", "з різними видами зв’язку"], cols: ["Коли хто не блукав по шляхах курських і сумських, не топтав стежок землі чернігівської і сіверської, вважай: не знає він своєї землі.", "Чудова, невидана та природна зона, якої не назвеш ані поліссям, ані лісостепом, бо вони тут ніби злились воєдино і явили людям щось третє.", "Ідеш дорогою, а пообіч степ широкий та розлогий.", "А там, збоку, починається ліс, синій та густий, літніми фарбами переповнений, тягнеться кудись у безкрай.", "Вийдеш на гору – зирк, перед тобою – диво небачене."], correct: [2, 1, 4, 0], saved: false, selected: [null, null, null, null] },
+      { id: 30, type: 'match', text: "Поєднайте виділені фрагменти простих (1–4) і складних (А – Д) речень за подібністю синтаксичного значення. <br><br> <img src='img/image30ukr.png' style='width:100%; max-width:600px; margin-bottom:15px; border-radius:4px;'>", rows: ["А в небі бриніли завзяті співці весняні – <strong style='font-size: 1.05em;'>незримі жайворонки</strong>.", "Родина приїхала в село <strong style='font-size: 1.05em;'>заради відпочинку</strong> від міської метушні.", "3. <strong style='font-size: 1.05em;'>Добре ставлячись до навколишнього середовища</strong>, ви робите планету кращим місцем для життя для всіх.", "Весна пробуджує <strong style='font-size: 1.05em;'>надії</strong> навіть у затятих скептиків."], cols: ["Весною легше вірити, <strong style='font-size: 1.05em;'>що за темною смугою в житті неодмінно настане світла</strong>.", "У японців, <strong style='font-size: 1.05em;'>які уславилися своїм прагненням до єдності з природою</strong>, існує весняна традиція милування заквітчаною сакурою.", "Кожен зобов’язаний піклуватися про довкілля, <strong style='font-size: 1.05em;'>що зробити цю планету чудовим місцем для життя</strong>.", "Люди відповідають за турботу про довкілля, <strong style='font-size: 1.05em;'>оскільки наш вплив на екосистеми є беззаперечним</strong>.", "Людина буде щасливішою в житті, <strong style='font-size: 1.05em;'>якщо зосередиться на тому</strong>, щоб давати, а не тільки споживати й отримувати."], correct: [1, 2, 4, 0], saved: false, selected: [null, null, null, null] },
+
+	],
+    math: [
+      { id: 1, type: 'choice', text: "На графіку відображено зміну робочої температури двигуна легкового автомобіля протягом 10 хвилин з моменту його запуску. Визначте за графіком кількість хвилин, протягом яких робоча температура двигуна була не більшою за 50 °C.", opts: ["7", "4", "3", "2", "5"], correct: 2, saved: false, selected: null, img: "image1.png" },
+      { id: 2, type: 'choice', text: "Сума трьох кутів паралелограма дорівнює 280°. Визначте градусну міру більшого кута цього паралелограма.", opts: ["\\( 100^\\circ \\)", "\\( 80^\\circ \\)", "\\( 140^\\circ \\)", "\\( 40^\\circ \\)", "\\( 120^\\circ \\)"], correct: 0, saved: false, selected: null },
+      { id: 3, type: 'choice', text: "Укажіть проміжок, якому належить корінь рівняння \\( \\frac{\\log_2 x}{2} = -1 \\).", opts: ["\\( (-\\infty; -1] \\)", "\\( (-1; 0] \\)", "\\( (0; 0,5] \\)", "\\( (0,5; 1] \\)", "\\( (1; +\\infty) \\)"], correct: 2, saved: false, selected: null },
+      { id: 4, type: 'choice', text: "Бісектриса кута A прямокутника ABCD перетинає сторону BC в точці K. Обчисліть площу чотирикутника AKCD, якщо BK = KC = 8 см.", opts: ["\\( 48 \\)", "\\( 72 \\)", "\\( 96 \\)", "\\( 128 \\)","\\( 192 \\)"], correct: 2, saved: false, selected: null },
+      { id: 5, type: 'choice', text: "Точка A розташована поза сферою з центром у точці O, заданої рівнянням \\( x^2 + y^2 + z^2 = 144 \\). Укажіть можливе значення модуля вектора \\( \\vec{OA} \\).", opts: ["\\( 6 \\)", "\\( 13 \\)", "\\( 12 \\)","\\( 11 \\)", "\\( 7 \\)"], correct: 1, saved: false, selected: null },
+      { id: 6, type: 'choice', text: "Пластикові кульки радіуса 6 см зберігають у висувній шухлядці, що має форму прямокутного паралелепіпеда (див. рисунок). Якою з наведених може бути висота h цієї шухлядки?", opts: ["\\( 10 \\)", "\\( 6 \\)", "\\( 3 \\)", "\\( 13 \\)", "\\( 4 \\)"], correct: 3, saved: false, selected: null, img: "image6.png" },
+      { id: 7, type: 'choice', text: "Перед Новим роком у магазині побутової техніки на всі товари було знижено ціни на 15%. Скільки коштуватиме після знижки телевізор вартістю 1800 грн?", opts: ["\\( 1200 \\)", "\\( 1350 \\)", "\\( 1430 \\)", "\\( 1530 \\)", "\\( 1785 \\)"], correct: 3, saved: false, selected: null },
+      { id: 8, type: 'choice', text: "Спростіть вираз \\( \\frac{a^2 - 6ab + 9b^2}{a - 3b} : (3b - a) \\).", opts: ["-1", "\\( -a^2 + 6ab - b^2 \\)", "\\( 3b - a \\)", "1", "\\( a^2 - 6ab + b^2 \\)"], correct: 0, saved: false, selected: null },
+      { id: 9, type: 'choice', text: "Які з наведених тверджень є правильними?<br>I. Навколо будь-якого ромба можна описати коло.<br>II. Діагоналі будь-якого ромба взаємно перпендикулярні.<br>III. У будь-якому ромбі всі сторони рівні.", opts: ["лише I та II", "лише II", "лише II та III", "лише I та III", "I, II та III"], correct: 2, saved: false, selected: null },
+      { id: 10, type: 'choice', text: "Обчисліть \\( \\frac{5^4 \\cdot 2^4}{20^3} \\)", opts: ["\\( \\frac{5}{4} \\)", "\\( \\frac{1}{10} \\)", "\\( \\frac{1}{2} \\)", "\\( \\frac{1}{20} \\)", "10"], correct: 0, saved: false, selected: null },
+      { id: 11, type: 'choice', text: "На рисунку зображено розгортку поверхні тіла, складеного з квадрата і чотирьох однакових рівносторонніх трикутників, сторони яких дорівнюють 6 см. Знайдіть довжину висоти цього тіла.", opts: ["\\( 2\\sqrt{3} \\)", "6", "\\( 3\\sqrt{3} \\)", "3", "\\( 3\\sqrt{2} \\)"], correct: 4, saved: false, selected: null, img: "image11.png" },
+      { id: 12, type: 'choice', text: "Знайдіть похідну функції \\( f(x) = 2x^3 - \\frac{1}{x^3} + \\ln 3 \\)", opts: ["\\( 6x^2 + \\frac{3}{x^4} \\)", "\\( 6x^2 - \\frac{3}{x^4} \\)", "\\( 6x^2 + \\frac{1}{x^4} \\)", "\\( 6x^2 - \\frac{1}{x^4} + \\frac{1}{3} \\)", "\\( 6x^2 + \\frac{3}{x^4} + \\frac{1}{3} \\)"], correct: 0, saved: false, selected: null },
+      { id: 13, type: 'choice', text: "Розв'яжіть систему рівнянь \\( \\begin{cases} 6(x + 5) + 10y = 3 \\\\ 2x = y + 4 \\end{cases} \\) Для одержаного розв’язку \\( (x_0; y_0) \\) укажіть суму \\( x_0 + y_0 \\).", opts: ["\\( -2,5 \\)", "\\( -3,5 \\)", "\\( 3,5 \\)", "\\( 6,5 \\)", "\\( -1,5 \\)"], correct: 0, saved: false, selected: null },
+      { id: 14, type: 'choice', text: "Обчисліть суму перших десяти членів арифметичної прогресії \\( (a_n) \\), якщо \\( a_1 + a_{10} = -12 \\).", opts: ["\\( -120 \\)", "\\( -240 \\)", "\\( -12 \\)", "\\( 120 \\)", "\\( -60 \\)"], correct: 4, saved: false, selected: null },
+      { id: 15, type: 'choice', text: "У ромбі \\( ABCD \\) діагональ \\( AC = m \\) утворює зі стороною \\( AB \\) кут \\( \\alpha \\) (див. рисунок). Знайдіть площу цього ромба.", opts: ["\\( \\frac{m^2 \\text{ tg } \\alpha}{2} \\)", "\\( m^2 \\sin \\alpha \\)", "\\( m^2 \\text{ tg } \\alpha \\)", "\\( \\frac{m^2 \\sin \\alpha}{2} \\)", "\\( \\frac{m^2}{2 \\text{ tg } \\alpha} \\)"], correct: 0, saved: false, selected: null, img: "image15.png" },
+      { id: 16, type: 'match', labels: ["Функція", "Кількість точок"], text: "У прямокутній декартовій системі координат на площині зображено замкнену ламану \\( ABC \\), де \\( A(-1; 0), B(0; 1), C(1; 0) \\). Узгодьте функцію (1–3) з кількістю (А – Д) спільних точок її графіка та ламаної \\( ABC \\).", img: "image16.png", rows: ["\\( y = 0 \\)", "\\( y = 1 - x^2 \\)", "\\( y = \\cos x \\)"], cols: ["А. жодної", "Б. лише одна", "В. лише дві", "Г. лише три", "Д. безліч"], correct: [4, 3, 1], saved: false, selected: [null, null, null] },
+      { id: 17, type: 'match', labels: ["Вираз", "Проміжок"], text: "Установіть відповідність між виразом (1–3) та точкою (А – Д) на координатній прямій (див. рисунок), координатою якої є значення цього виразу, якщо \\( a = 2 \\).", img: "image17.png", rows: ["\\( -(\\sqrt{a})^2 \\)", "\\( 4a^{-1} \\)", "\\( 100^{\\lg a} \\)"], cols: ["А. K", "Б. L", "В. M", "Г. N", "Д. P"], correct: [1, 3, 4], saved: false, selected: [null, null, null] },
+      { id: 18, type: 'match', labels: ["Відрізок", "Довжина"], text: "На рисунку зображено квадрат \\( ABCD \\), периметр якого 64 см. На сторонах \\( AB \\) і \\( AD \\) квадрата \\( ABCD \\) вибрано відповідно точки \\( K \\) і \\( M \\) так, що \\( \\angle CKM = 90^\\circ, BK = KA \\). Установіть відповідність між відрізком (1–3) та його довжиною (А – Д).", img: "image18.png", rows: ["сторона квадрата \\( ABCD \\)", "CK", "CM"], cols: ["А. 8", "Б. \\( 8\\sqrt{5} \\)", "В. 16", "Г. \\( 12\\sqrt{5} \\)", "Д. 20"], correct: [2, 1, 4], saved: false, selected: [null, null, null] },
+      { id: 19, type: 'input', text: "На рисунку зображено графіки функцій \\( f(x) = \\sqrt{x} \\) і \\( g(x) = \\frac{x}{2} \\). Обчисліть площу \\( S \\) фігури, обмеженої графіками цих функцій. У відповідь запишіть значення \\( 3S \\).", correct: "4", saved: false, selected: "", img: "image19.png" },
+      { id: 20, type: 'input', text: "Конус і правильна чотирикутна призма мають рівні висоти. Радіус описаного навколо основи призми дорівнює радіусу основи конуса. Визначте об'єм (у \\( см^3 \\)) призми, якщо діагональ її основи дорівнює 16 см, а твірна конуса – 17 см.", correct: "1920", saved: false, selected: "" },
+      { id: 21, type: 'input', text: "Обчисліть кутовий коефіцієнт дотичної, проведеної до функції \\( f(x) = 17 + 2x - x^2 \\) у точці з абсцисою \\( x_0 = -3 \\).", correct: "8", saved: false, selected: "" },
+      { id: 22, type: 'input', text: "Знайдіть суму всіх цілих значень \\( a \\) з проміжку \\( [-5; 5] \\), за кожного з яких рівняння <span style='font-size: 1.5em; vertical-align: middle;'> \\( \\frac{2^{2x+a} - 2^{x+3}}{\\log_2 x} \\) </span> \\( = 0 \\) має корінь.", correct: "-14", saved: false, selected: "" },
+    ],
+    hist: [
+      { id: 1, type: 'choice', text: "Яка з наведених пам'яток належить трипільцям?", opts: ["А", "Б", "В", "Г"], correct: 2, saved: false, selected: null, img: "image1h.png" },
+      { id: 2, type: 'choice', text: "Укажіть правильне твердження", opts: ["Скіфська держава вистояла під час вторгнення перського царя Дарія", "Грецькі міста-держави Північного Причорномор'я переважно були монархіями", "Германські племена гунів прийшли в причорноморські степи з Азії", "Сарматський цар Атей карбував власну монету"], correct: 0, saved: false, selected: null },
+      { id: 3, type: 'choice', text: "Про якого князя йдеться в літописі: <br><i>«По смерті ж великого князя ..., вікопомного самодержця всієї Русі, який одолів усі поганські народи, мудрістю ума додержуючи заповідей Божих ... велика смута постала в землі Руській»</i>?", opts: ["Ярослава Осмомисла", "Данилу Галицькому", "Романа Мстиславича", "Юрію І Львовичу"], correct: 2, saved: false, selected: null },
+      { id: 4, type: 'choice', text: "Які території заштриховано на поданій картосхемі:", opts: ["Українські землі, що передавалися ВКЛ за умовами Кревської унії 1385 р.", "Українські землі, що втратило ВКЛ в ході московсько-литовських війн кінця XV - середини XVI ст.", "Українські землі, що увійшли до складу Польського королівства внаслідок Люблінської унії (1569 р.)", "Українські землі, на яких було відновлено удільний устрій у складі Речі Посполитої в другій половині XVI ст."], correct: 2, saved: false, selected: null, img: "image4h.png" },
+      { id: 5, type: 'choice', text: "У якому столітті відбулися описані події?<br><i>«...Василій Іванович, великий князь московський, взяв град Смоленський. Король Сигізмунд... послав проти нього свого воєводу князя Костянтина Івановича Острозького... І стали князь з воїнами литовськими проти великої ворожої армії, і вдарили та погубили вісімдесят тисяч, а інших в полон взяли»</i>.", opts: ["XIV ст.", "XV ст.", "XVI ст.", "XVII ст."], correct: 2, saved: false, selected: null },
+      { id: 6, type: 'choice', text: "Результат якої битви забезпечив Б. Хмельницькому укладення династичного союзу з Молдавським князівством?", opts: ["Пилявецької", "Зборівської", "Батозької", "Берестецької"], correct: 2, saved: false, selected: null },
+      { id: 7, type: 'choice', text: "У другій половині XVII ст. в Лівобережній Гетьманщині привілейований стан суспільства формувався переважно з", opts: ["козацької старшини і православної шляхти.", "заможних міщан і православного духовенства.", "козацької старшини і російського дворянства.", "магнатів і духовенства."], correct: 0, saved: false, selected: null },
+      { id: 8, type: 'choice', text: "Кому московський уряд дав ці настанови?<br><i>«Дізнатися достеменно, таємним способом, скільки за колишнього гетьмана ... збиралося всіляких прибутків з усього Малоросійського краю та скільки збиратиметься тепер; довідатися також, які прибутки мають генеральна старшина й полковники...»</i>", opts: ["Ректорові Києво-Могилянської академії Ф. Прокоповичу", "Гетьманові І. Скоропадському", "Міністрові-резиденту П. Ізмайлову", "Наказному гетьманові П. Полуботку"], correct: 2, saved: false, selected: null },
+      { id: 9, type: 'choice', text: "Критику представників якої течії в українському суспільно-політичному русі другої половини XIX ст. наведено в уривку з історичного джерела: <br><i>«Давно вони вже відвернулися від тої живої Русі, що говорила, співала, страждала.., а знайшли другу, мертву, той кам'яний істукан — Русь, що виписана була в документах!..»</i>?", opts: ["громадівців", "народовців", "радикалів", "москвофілів"], correct: 3, saved: false, selected: null },
+      { id: 10, type: 'choice', text: "Про якого діяча йдеться в уривку з історичного джерела:<br><i>«Його геній виявився здатним поєднувати інтелектуальну напругу, спрямовану на створення фундаментальних біологічних концепцій, з тяжкою, жертовною діяльністю в галузі медицини. Так, працюючи в Одесі, провів дослід самозараження тифом, а в 1892 р., розробляючи способи боротьби з епідемією холери у Франції, випив культуру збудника цієї смертельної хвороби...»</i>?", opts: ["М. Гамалію", "М. Бекетова", "І. Мечнікова", "М. Пирогова"], correct: 2, saved: false, selected: null },
+      { id: 11, type: 'choice', text: "На карті заштриховано районну спеціалізацію наприкінці XIX – на початку XX ст.:", opts: ["товарного садівництва", "товарного бурякового виробництва", "товарного виноробства", "товарного зернового виробництва"], correct: 1, saved: false, selected: null, img: "image11h.png" },
+      { id: 12, type: 'choice', text: "Воєнні дії на території України завершилися в 1917 році", opts: ["Повною перемогою Російської імперії, яка анексувала Галичину, Буковину і Закарпаття", "Перемогою Австро-Угорщини, яка зайняла території Волині і Західного Поділля", "Втратою частини Галичини Австро-Угорщиною на користь Росії", "Фактичною нічиєю"], correct: 3, saved: false, selected: null },
+      { id: 13, type: 'choice', text: "«На Львів через Київ!» — під яким гаслом улітку 1919 р. здійснювала наступ", opts: ["Робітничо-селянська червона армія.", "Добровольча армія генерала А. Денікіна.", "Польська армія генерала Ю. Галлера.", "Українська галицька армія."], correct: 1, saved: false, selected: null },
+      { id: 14, type: 'choice', text: "Із якою метою партійно-державне керівництво УСРР наприкінці 1920-х рр. розповсюджувало зображений плакат?", opts: ["Спонукати одноосібників добровільно вступати в колгоспи.", "Викликати у селян зневажливе ставлення до одноосібників.", "Посилити класову боротьбу на селі проти куркульства.", "Роз'яснити селянству завдання політики «ліквідації куркульства як класу»."], correct: 0, saved: false, selected: null, img: "image14h.png" },
+      { id: 15, type: 'choice', text: "У якій країні відбувалися події?<br><i>«Тоді законів не було ніякого закону. Був воєнний стан і полна сваволя не тільки... жандармерії і таємної поліції, а й повітового префекта, бо всі зайди вважали себе тут абсолютними панами, а українців ні за що не мали в ролі паріїв...»</i>", opts: ["в УРСР", "у Польщі", "в Румунії", "в Чехословаччині"], correct: 2, saved: false, selected: null },
+      { id: 16, type: 'choice', text: "Які нові області утворили в складі УРСР унаслідок територіального розширення СРСР 1939–1940 років?", opts: ["Волинська, Рівненська, Львівська, Станіславська, Ужгородська, Тернопільська, Чернівецька", "Луцька, Рівненська, Дрогобицька, Львівська, Дрогобицька, Станіславська, Тернопільська, Чернівецька, Ізмаїльська", "Львівська, Волинська, Львівська, Дрогобицька, Станіславська, Тернопільська, Чернівецька, Ізмаїльська", "Рівненська, Дрогобицька, Дрогобицька, Хмельницька, Львівська, Ізмаїльська, Чернівецька"], correct: 2, saved: false, selected: null },
+      { id: 17, type: 'choice', text: "Генерал-хорунжий, командувач Української повстанської армії (УПА) з 1950 року, — це", opts: ["Дмитро Клячківський.", "Степан Бандера.", "Роман Шухевич.", "Василь Кук."], correct: 3, saved: false, selected: null },
+      { id: 18, type: 'choice', text: "Яка зміна в економічному розвитку України в другій половині 1950 – першій половині 1960-х років пов’язана зі створенням раднаргоспів?", opts: ["Перехід підприємств на повний госпрозрахунок у межах економічних зон.", "Установлення щомісячного авансування та пенсій за віком для колгоспників.", "Раціоналізація використання місцевих матеріальних і людських ресурсів.", "Ліквідація товарно-грошових відносин і централізованого планування."], correct: 2, saved: false, selected: null },
+      { id: 19, type: 'choice', text: "Прочитайте уривок документа: <i>«Уранці 19 серпня командувач сухопутними військами СРСР генерал В. Варенников, прибувши з групою військових до кабінету Голови Верховної Ради УРСР, в ультимативній формі йому заявив: “Влада перейшла до ДКНС, який врятує країну. Рекомендую Вам зайняти правильну позицію. Змінити свій особистий курс і курс Верховної Ради...”»</i> Наслідком описаної в документі події стало", opts: ["ухвалення Верховною Радою УРСР Декларації про державний суверенітет України.", "проведення перших альтернативних виборів до Верховної Ради УРСР.", "ухвалення Конституції України.", "ухвалення Верховною Радою УРСР Акта проголошення незалежності України."], correct: 3, saved: false, selected: null },
+      { id: 20, type: 'choice', text: "Що спричинило події, яким приурочено плакат?", opts: ["спроба влади придушити Євромайдан", "окупація Росією Кримського півострова", "достроковий розпуск Верховної Ради України", "фальсифікація владою президентських виборів"], correct: 0, saved: false, selected: null, img: "image20h.png" },
+      { id: 21, type: 'match', text: "Узгодьте подію (1–4) з роком (А – Д), коли вона відбулася.", rows: ["проголошення курсу на індустріалізацію", "входження УСРР до складу СРСР", "утворення Української автокефальної православної церкви", "початок насильницької колективізації"], cols: ["А. 1921 р.", "Б. 1922 р.", "В. 1923 р.", "Г. 1925 р.", "Д. 1929 р."], correct: [3, 1, 0, 4], saved: false, selected: [null, null, null, null] },
+      { id: 22, type: 'match', text: "Узгодьте поняття (1–4) з його визначенням (А – Д).", rows: ["«Волюнтаризм»", "«Дисидентство»", "«Застій»", "«Номенклатура»"], cols: ["А. виступ проти існуючого державного ладу чи загальноприйнятих норм.", "Б. політика, що не рахується з об'єктивними законами та реальними умовами.", "В. період уповільнення темпів розвитку та відсутність змін в управлінні.", "Г. перехід від галузевого до територіального управління господарством.", "Д. панівна верства радянського суспільства, призначена владою."], correct: [1, 0, 2, 4], saved: false, selected: [null, null, null, null] },
+      { id: 23, type: 'match', text: "Кому з діячів (1–4) належить наведений факт біографії (А – Д)?", rows: ["Євген Коновалець", "Дмитро Донцов", "Василь Мудрий", "Августин Волошин"], cols: ["А. президент Карпатської України", "Б. перший голова Організації українських націоналістів", "В. один із засновників Української національної партії Буковини", "Г. ідеолог українського інтегрального націоналізму", "Д. секретар Таємного українського університету у Львові"], correct: [1, 3, 4, 0], saved: false, selected: [null, null, null, null] },
+      { id: 24, type: 'match', text: "Увідповідніть уривок історичного джерела (1–4) з його назвою (А – Д).", rows: ["«Костянтин з матір’ю своєю, Оленою, хрест із Єрусалима приніс... Ти ж із своєю бабусею, Ольгою, принесли хрест від нового Єрусалима...»",  "«Якщо вдарить мечем не на смерть, то має заплатити 3 гривні.., а потерпілому – гривню за рану, як лікувальне...»", "«Й ті ж слов’яни, прийшовши, сіли по Дніпру і назвалися полянами, а інші – деревлянами... Другі ж сіли на Десні, і по Сейму...»", "«А найголовніше – убогих не забувайте, а скільки можете, ...годуйте і подайте милостиню сироті...»"], cols: ["А. «Руська правда»",  "Б. «Повчання дітям»",  "В. «Слово про Закон і Благодать»", "Г. «Повість минулих літ»", "Д. «Слово о полку Ігоревім»"], correct: [2, 0, 3, 1], saved: false, selected: [null, null, null, null] },
+      { id: 25, type: 'sequence', text: "Установіть послідовність змін території Гетьманщини, відображених на картосхемах.", rows: ["", "", "", ""], cols: ["", "", "", ""], correct: [0, 3, 2, 1], saved: false, selected: [null, null, null, null], img: "image25h.png" },
+      { id: 26, type: 'sequence', text: "Встановіть послідовність правління зображених діячів", img: "image26h.png", rows: ["", " ", "", ""], cols: ["", "", "", ""], correct: [1, 2, 0, 3], saved: false, selected: [null, null, null, null] },
+      { id: 27, type: 'sequence', text: "Установіть послідовність ухвалення документів, уривки з яких процитовано", rows: ["", "", "", ""], cols: ["«...Держави-члени... вирішили прийняти цей Статут, на основі якого і було створено Раду Європи... кожна держава-член... повинна визнавати принцип верховенства права...»", "«...військово-цивільні адміністрації — це тимчасові державні органи... для забезпечення... правопорядку, розвитку місцевого самоврядування... у районі проведення антитерористичної операції...»", "«...Збройні Сили України мають таку структуру: Генеральний штаб... Види Збройних Сил: Сухопутні війська, Повітряні Сили, Військово-Морські Сили...»", "«...Верховна Рада України від імені Українського народу... прийняла цю Конституцію — Основний Закон України...»"], correct: [2, 0, 3, 1], saved: false, selected: [null, null, null, null] },
+      { id: 28, type: 'multi', text: "Укажіть риси, характерні для економічного розвитку Наддніпрянської України в другій половині XIX ст.", opts: ["витіснення іноземного капіталу з провідних галузей промисловості", "домінування селянського господарства в товарному виробництві хліба", "завершення промислового перевороту, початок монополізації", "дефіцит робочої сили в сільськогосподарському виробництві", "бурхливий розвиток вуглевидобувної, гірничорудної та металургійної галузей", "будівництво розгалуженої системи залізниць", "розквіт чумацького промислу"], correct: [2, 4, 5], saved: false, selected: [] },
+      { id: 29, type: 'multi', text: "Які твердження характеризують діяльність Української Центральної Ради?", opts: ["проголошення чотирьох Універсалів", "створення Директорії для повалення гетьманського режиму", "ведення переговорів з делегацією Тимчасового уряду", "створення регулярної Армії УНР шляхом загальної мобілізації", "підписання Брест-Литовського мирного договору", "формування Легіону Українських січових стрільців", "ліквідація поміщицького землеволодіння за законом 1920 року"], correct: [0, 2, 4], saved: false, selected: [] },
+      { id: 30, type: 'multi', text: "Проаналізуйте зображену картосхему. Картосхема дає змогу:", opts: ["простежити напрямки молдавського походу Б. Хмельницького в 1650 р.", "визначити шлях наступу козацького війська в 1648 р.", "відслідкувати напрямок походу козаків у 1651 р.", "окреслити територію Української козацької держави за Зборівським миром", "указати місце підписання перемир’я між Московською державою та Річчю Посполитою в 1656 р.", "показати місце битви, у якій козацьке військо зазнало поразки", "зазначити місце укладення договору, за яким територію Гетьманщини було обмежено Київським воєводством"], correct: [2, 5, 6], saved: false, selected: [], img: "image30h.png" },
+    ],
+bio: [
+      { id: 1, type: 'choice', text: "Розгляньте об'єкти 1–6, зображені на рисунку. Які з них є складниками біологічних систем клітинного рівня організації життя?", opts: ["1, 2, 5", "1, 3, 6", "2, 4, 5", "3, 4, 6"], correct: 2, saved: false, selected: null },
+      { id: 2, type: 'choice', text: "У складі молекули РНК 120 залишків аденіну, 100 – гуаніну, 80 – цитозину та 60 – урацилу. Скільки залишків рибози містить ця молекула РНК?", opts: ["0", "60", "360", "720"], correct: 2, saved: false, selected: null },
+      { id: 3, type: 'choice', text: "Причиною деяких захворювань людини (наприклад, хвороби Тея - Сакса) може бути порушення функцій однієї з клітинних органел, унаслідок чого клітини втрачають здатність розщеплювати певні речовини. Ці сполуки накопичуються в клітинах, що й призводить до небезпечних наслідків. Про яку органелу йдеться?", opts: ["мітохондрію", "лізосому", "рибосому", "вакуолю"], correct: 1, saved: false, selected: null },
+      { id: 4, type: 'choice', text: "Учень та учениця розглянули схему фотосинтезу. Учениця зазначила, що літерою X позначено кисень. Учень зауважив, що його утворення відбувається у темновій фазі фотосинтезу. Хто із учнів має рацію?", opts: ["лише учень", "лише учениця", "обоє мають рацію", "обоє помиляються"], correct: 1, saved: false, selected: null, img: "image4b.png" },
+      { id: 5, type: 'choice', text: "Закономірність успадкування ознак, яка виявляється в одноманітності гібридів першого покоління, було вперше встановлено", opts: ["Т. Морганом", "Г. Менделем", "А. Вейсманом", "М. І. Вавиловим"], correct: 1, saved: false, selected: null },
+      { id: 6, type: 'choice', text: "Яка ймовірність народження короткозорої дитини у батьків, що гетерозиготні за цією ознакою? Візьміть до уваги, що короткозорість – аутосомно-домінантна ознака.", opts: ["25 %", "50 %", "75 %", "100 %"], correct: 2, saved: false, selected: null },
+	  { id: 7, type: 'choice', text: "Оберіть правильні твердження щодо ймовірних джерел комбінативної мінливості: 1) кросинговер під час мейозу; 2) втрата частини певної хромосоми; 3) незалежне розходження хромосом до дочірніх клітин під час мейозу; 4) зміна кількості хромосом; 5) випадкове об’єднання гамет під час запліднення; 6) втрата кількох нуклеотидів молекулою ДНК.", opts: ["1, 2, 3", "2, 4, 6", "3, 4, 5", "1, 3, 5"], correct: 3, saved: false, selected: null },
+	  { id: 8, type: 'choice', text: "Яка з наведених загальнобіологічних властивостей живих систем характерна для вірусів?", opts: ["подразливість", "наявність нуклеїнової кислоти", "здатність самостійно синтезувати білки", "ріст і розвиток"], correct: 1, saved: false, selected: null },
+	  { id: 9, type: 'choice', text: "На рисунку зображено поперечний розріз листка. Яка функція структури, позначеної буквою X?", opts: ["газообмін", "транспірація", "фотосинтез", "транспорт речовин"], correct: 3, saved: false, selected: null, img: "image9b.png" },
+	  { id: 10, type: 'choice', text: "Вкажіть спосіб поширення зображеного плода.", opts: ["вітром", "птахами", "на хутрі тварин", "водою"], correct: 0, saved: false, selected: null,  img: "image10b.png" },
+	  { id: 11, type: 'choice', text: "На рисунку зображено...", opts: ["амебу звичайну", "інфузорію-туфельку", "кишкову паличку", "хламідомонаду"], correct: 1, saved: false, selected: null,  img: "image11b.png" },
+	  { id: 12, type: 'choice', text: "Вкажіть організм, що має клітинну стінку з хітину.", opts: ["суниці лісові", "павук-хрестовик", "кишкова паличка", "мухомор звичайний"], correct: 3, saved: false, selected: null },
+	  { id: 13, type: 'choice', text: "Вкажіть, якою літерою позначено організм, покриви якого утворені хітином.", opts: ["А", "Б", "В", "Г"], correct: 1, saved: false, selected: null, img: "image13b.png"  },
+	  { id: 14, type: 'choice', text: "Вкажіть організм, якому притаманні наступні ознаки: тіло вкрите роговими лусками, трикамерне серце, легеневе дихання.", opts: ["А", "Б", "В", "Г"], correct: 2, saved: false, selected: null,  img: "image14b.png"  },
+	  { id: 15, type: 'choice', text: "Укажіть ряд, до якого належить зображена на емблемі тварина.", opts: ["Комахоїдні", "Гризуни", "Примати", "Хижі"], correct: 3, saved: false, selected: null,  img: "image15b.png" },
+	  { id: 16, type: 'choice', text: "Нобелівську премію з фізіології та медицини 2021 отримали науковці за відкриття рецепторів до температури і тиску. Які саме нейрони досліджували вчені, якщо ці нейрони мають у своїй плазмалемі термочутливі рецептори?", opts: ["відцентрові", "рухові", "вставні", "чутливі"], correct: 3, saved: false, selected: null },
+	  { id: 17, type: 'choice', text: "Вазопресин (антидіуретичний гормон) вивільняється в кров", opts: ["гіпофізом", "наднирниками", "щитоподібною залозою", "підшлунковою залозою"], correct: 0, saved: false, selected: null },
+	  { id: 18, type: 'choice', text: "Розгляньте рисунок. Стрілкою позначено рух артеріальної крові. Вкажіть правильні твердження: І. Цифрою 3 позначено вену. ІІ. Зображена структура належить великому колу кровообігу.", opts: ["правильне лише І", "правильне лише ІІ", "обидва твердження правильні", "обидва твердження хибні"], correct: 2, saved: false, selected: null,  img: "image18b.png"  },
+	  { id: 19, type: 'choice', text: "Яку структуру ока на рисунку позначено помилково?", opts: ["склисте тіло", "склера", "передня волога камера", "кришталик"], correct: 3, saved: false, selected: null, img: "image19b.png"  },
+	  { id: 20, type: 'choice', text: "На рисунку відображено динаміку вмісту в розчині крохмалю (А) та білка (В) під впливом ферментів. Вертикальна вісь відображає концентрацію речовини, горизонтальна — час. Стрілками позначено моменти, коли до розчину додавали ферменти. Виберіть твердження, яке правильно характеризує проведений експеримент.", opts: ["стрілка 2 вказує на момент додавання пепсину", "стрілка 2 вказує на момент додавання амілази", "стрілка 1 указує на момент додавання трипсину", "стрілка 1 указує на момент додавання ліпази"], correct: 0, saved: false, selected: null,  img: "image20b.png"  },
+	  { id: 21, type: 'choice', text: "Вкажіть, якою літерою позначено складник шкіри, який забезпечує виведення з організму людини кінцевих продуктів обміну.", opts: ["А", "Б", "В", "Г"], correct: 1, saved: false, selected: null, img: "image21b.png"  },
+	  { id: 22, type: 'choice', text: "Якою літерою позначено графік, що ілюструє залежність виділення нектару рослинами від температури?", opts: ["А", "Б", "В", "Г"], correct: 1, saved: false, selected: null, img: "image22b.png" },
+	  { id: 23, type: 'choice', text: "Яке твердження щодо зазначених організмів (бджола та рослини) можна сформулювати, проаналізувавши текст?", opts: ["ці організми в екосистемі належать до продуцента і редуцента", "організми є складниками детритного ланцюга живлення", "в наведені організми не пов'язані трофічними зв'язками", "описані організми перебувають на різних трофічних рівнях ланцюга живлення"], correct: 3, saved: false, selected: null },
+	  { id: 24, type: 'choice', text: "Учень та учениця обговорювали взаємовідносини між комахозапильними рослинами й бджолами. Учень висловив судження, що вони є результатом коеволюції. Учениця зауважила, що ці взаємовідносини є прикладом коменсалізму. Хто з них має рацію?", opts: ["лише учень", "лише учениця", "обоє мають рацію", "обоє помиляються"], correct: 0, saved: false, selected: null },
+	  { id: 25, type: 'match', text: "Увідповідніть речовину (1–4) з групою органічних сполук (А – Д), до якої вона належить.", rows: ["рибоза", "колаген", "крохмаль", "холестерол"], cols: ["білки", "ліпіди", "нуклеотиди", "моносахариди", "полісахариди"], correct: [3, 0, 4, 1], saved: false, selected: [null, null, null, null] },
+	  { id: 26, type: 'match', text: "Установіть відповідність між позначеними структурами зображеної клітини та їхнім складом.", rows: ["", "", "", ""], cols: ["целюлоза", "муреїн", "хлорофіл", "клітинний сік", "хроматин"], correct: [3, 0, 4, 2], saved: false, selected: [null, null, null, null], img: "image26b.png"  },
+	  { id: 27, type: 'match', text: "Увідповідніть тварину (1–4) з особливостями її розмноження (А–Д).", rows: ["Афаліна чорноморська", "Кенгуру гігантський", "Качкодзьоб австралійський", "Вивірка звичайна"], cols: ["розвинена плацента, малята народжуються у воді", "розвинена плацента, малята народжуються на суходолі", "недорозвинена плацента, малята вигодовують молоком", "зародок розвивається в яйці, малята вигодовують молоком", "зародок розвивається в яйці, не вигодовують малят молоком"], correct: [0, 2, 3, 1], saved: false, selected: [null, null, null, null] },
+	  { id: 28, type: 'match', text: "Установіть відповідність між відділом скелета людини та кісткою, що входить до його складу.", rows: ["череп", "пояс верхніх кінцівок", "вільна верхня кінцівка", "вільна нижня кінцівка"], cols: ["променева", "мала гомілкова", "скронева", "ключиця", "грудина"], correct: [2, 3, 0, 1], saved: false, selected: [null, null, null, null] },	  
+      { id: 29, type: 'multiselect', text: "Розгляньте схему біологічного процесу. Укажіть його назву та правильні варіанти для заповнення пропусків.", cases: [{ label: "Назва процесу", opts: ["реплікація", "транскрипція", "трансляція"], correct: 2 }, { label: "Триплет мРНК", opts: ["ГУА", "ГУТ", "ЦАУ"], correct: 0 }, { label: "Антикодон тРНК", opts: ["ЦЦА", "ГГТ", "ГГУ"], correct: 2 }], saved: false, selected: [null, null, null], img: "image29b.png" },
+      { id: 30, type: 'multiselect', text: "Охарактеризуйте процес зсідання крові за наведеними характеристиками.", cases: [{ label: "Клітини, залучені до процесу", opts: ["еритроцити", "лейкоцити", "тромбоцити"], correct: 2 }, { label: "Йони якого хімічного елемента залучені до процесу", opts: ["Феруму", "Кальцію", "Калію"], correct: 1 }, { label: "Білок, залучений до процесу", opts: ["альбумін", "гемоглобін", "протромбін"], correct: 2 }], saved: false, selected: [null, null, null], img: "image30b.png" },
+ ] 
+	 
+}; 
+
+// Тепер змінні будуть працювати без помилок
+let currentSub = 'ukr', 
+    timeLeft = 7200, 
+    timerInterval = null, 
+    activeMatch = null, 
+    isSecondStage = false;
+
+  function showRules() {
+    const loginVal = document.getElementById('login-input').value;
+    const passVal = document.getElementById('pass-input').value;
+    const user = users.find(u => u.login === loginVal && u.pass === passVal);
+    if (user) {
+      document.querySelectorAll('.user-name-display').forEach(el => el.textContent = user.name);
+      document.getElementById('auth-page').style.display = 'none';
+      document.getElementById('rules-page').style.display = 'flex';
+    } else { alert("Невірний логін або пароль!"); }
+  }
+
+  function showConfirm() {
+    document.getElementById('rules-page').style.display = 'none';
+    if (isSecondStage) document.getElementById('pre-start-page').style.display = 'flex';
+    else document.getElementById('confirm-page').style.display = 'flex';
+  }
+
+  function showPreStart() {
+    isSecondStage = false;
+    document.getElementById('confirm-page').style.display = 'none';
+    document.getElementById('pre-start-page').style.display = 'flex';
+  }
+
+  function startSecondStage() {
+    isSecondStage = true;
+    timeLeft = 7200; 
+    
+    document.getElementById('confirm-page').style.display = 'none';
+    document.getElementById('pre-start-page').style.display = 'flex';
+    
+    const clock = document.getElementById('clock-val');
+    if (clock) clock.textContent = "2:00:00";
+}
+
+  function showInstructionSlide() {
+    document.getElementById('pre-start-page').style.display = 'none';
+    document.getElementById('instruction-page').style.display = 'flex';
+    
+    const instrTitle = document.querySelector('.instr-title');
+    const stageText = isSecondStage ? "(2 Етап)" : "(1 Етап)";
+    instrTitle.textContent = `Тест "НМТ-2026_демоверсія" ${stageText} обмежений у часі (2 години).`;
+}
+
+function startTest() {
+    document.getElementById('instruction-page').style.display = 'none';
+    document.getElementById('test-page').style.display = 'flex';
+    timeLeft = 7200;
+    const switcher = document.getElementById('sub-switcher-area');
+    
+    if (isSecondStage) {
+      currentSub = 'bio'; 
+      switcher.innerHTML = `
+        <div class="sub-btn nav-arrows" onclick="performSwitch('bio')">‹ Назад</div>
+        <div class="sub-btn" id="btn-bio" onclick="performSwitch('bio')">Біологія</div>
+        <div class="sub-btn" id="btn-hist" onclick="performSwitch('hist')">Історія України</div>
+        <div class="sub-btn nav-arrows" style="border-right:none;" onclick="performSwitch('hist')">Вперед ›</div>`;
+    } else {
+      currentSub = 'ukr';
+      switcher.innerHTML = `
+        <div class="sub-btn nav-arrows" onclick="performSwitch('ukr')">‹ Назад</div>
+        <div class="sub-btn" id="btn-ukr" onclick="performSwitch('ukr')">Українська мова</div>
+        <div class="sub-btn" id="btn-math" onclick="performSwitch('math')">Математика</div>
+        <div class="sub-btn nav-arrows" style="border-right:none;" onclick="performSwitch('math')">Вперед ›</div>`;
+    }
+
+    if (!timerInterval) {
+      timerInterval = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          let h = Math.floor(timeLeft / 3600), m = Math.floor((timeLeft % 3600) / 60), s = timeLeft % 60;
+          let clock = document.getElementById('clock-val');
+          if(clock) clock.textContent = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+      }, 1000);
+    }
+    performSwitch(currentSub);
+  }
+
+ function performSwitch(sub) {
+    const unsavedInCurrent = data[currentSub].filter(q => !q.saved);
+    if (unsavedInCurrent.length > 0 && sub !== currentSub) {
+      document.getElementById('switch-unsaved-list').innerHTML = unsavedInCurrent.map(q => `<div>Завдання ${q.id}</div>`).join('');
+      document.getElementById('switch-overlay').style.display = 'flex';
+      document.getElementById('btn-force-switch').onclick = () => { closeSwitchModal(); currentSub = sub; updateUI(); };
+    } else { currentSub = sub; updateUI(); }
+  }
+
+
+  function updateUI() {
+    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    if (document.getElementById(`btn-${currentSub}`)) document.getElementById(`btn-${currentSub}`).classList.add('active');
+    
+    // Додаємо Біологію в перелік для відображення шляху
+    const subLabel = currentSub === 'ukr' ? 'Українська мова' : currentSub === 'math' ? 'Математика' : currentSub === 'hist' ? 'Історія України' : currentSub === 'bio' ? 'Біологія' : 'Предмет';
+    document.getElementById('path-text').innerHTML = `Іспит &nbsp;›&nbsp; НМТ-2026_демоверсія &nbsp;›&nbsp; ${subLabel}`;
+    render();
+    window.scrollTo(0,0);
+  }
+
+  function closeSwitchModal() { document.getElementById('switch-overlay').style.display = 'none'; }
+  function closeFinishModal() { document.getElementById('finish-overlay').style.display = 'none'; }
+  function openMathDocs() { window.open("dv.pdf", "_blank", "width=900,height=700"); }
+
+
+function render() {
+    const qList = document.getElementById('q-list');
+    qList.innerHTML = data[currentSub].map((q, i) => {
+        let qLayout = "";
+        
+// 1. ЛОГІКА ЗАГОЛОВКІВ ТА КАРТИНОК
+        if (q.img) {
+            if (q.type === 'eng-match') {
+                qLayout = ""; 
+            } else {
+                qLayout = `
+                <div class="vertical-q-container" style="display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div class="text-q" style="width: 100%; font-size: 1.05rem; line-height: 1.5; text-align: left;">${q.text}</div>
+                    <div class="img-q" style="width: 100%; display: flex; justify-content: center;">
+                        <img src="img/${q.img}" style="max-width: 400px; width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                </div>`;
+            }
+        } else {
+            qLayout = (q.type === 'eng-match') ? "" : `<div class="text-q">${q.text}</div>`;
+        }
+
+// 2. ІНТРО-КАРТКИ (ІНСТРУКЦІЇ)
+        
+      let headerText = "";
+      if(currentSub === 'math') {
+        if(q.id === 1) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Завдання 1– 15 мають по п’ять варіантів відповіді, з яких лише один правильний. Виберіть правильний, на Вашу думку, варіант відповіді й натисніть курсором на значок <span class="radio-icon"></span>. Ви можете замінити дібраний варіант відповіді на інший. Позначений Вами остаточний варіант відповіді <span class="radio-icon active"></span> НАДІШЛІТЬ, натиснувши курсором на кнопку под завданням.</div>`;
+        if(q.id === 16) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">У завданнях на встановлення відповідності до кожного з фрагментів інформації, позначених цифрами, доберіть один правильний, на Вашу думку, варіант відповіді, позначений буквою/номером. Для цього натисніть курсором на нього, а потім — на порожнє поле навпроти інформації, позначеної цифрою. Виберіть новий варіант відповіді. Після остаточного вибору НАДІШЛІТЬ відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+        if(q.id === 19) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Розв’яжіть завдання 19–22. Одержані числові відповіді впишіть у спеціальне поле. Відповіді записуйте лише десятковим дробом. Ви можете замінити відповідь на іншу. НАДІШЛІТЬ остаточну відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+      } else if (currentSub === 'hist') {
+        if(q.id === 1) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Завдання 1–20 мають по чотири варіанти відповіді, з яких лише один правильний. Виберіть правильний, на Вашу думку, варіант відповіді й натисніть курсором на значок <span class="radio-icon"></span>. Ви можете замінити дібраний варіант відповіді на інший. Позначений Вами остаточний варіант відповіді <span class="radio-icon active"></span> НАДІШЛІТЬ, натиснувши курсором на кнопку під завданням.</div>`;
+        if(q.id === 21) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">У завданнях 21–24 до кожного із чотирьох фрагментів інформації, позначених цифрами, доберіть один правильний, на Вашу думку, варіант відповіді, позначений буквою. Для цього натисніть курсором на нього, а потім — на порожнє поле навпроти інформації, позначеної цифрою. Або натисніть курсором на варіант відповіді, позначений буквою, і перетягніть його на порожнє поле навпроти інформації, позначеної цифрою. Ви можете змінити дібраний варіант відповіді: видаліть його, натиснувши курсором на значок <span style="display:inline-block; width:18px; height:18px; border:1px solid #ccc; line-height:16px; color:#c1153e; border-radius:3px; vertical-align:middle; text-align:center;">×</span>. Після остаточного вибору НАДІШЛІТЬ відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+        if(q.id === 25) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">У завданнях на встановлення правильної послідовності до кожного з фрагментів інформації, позначених цифрами, доберіть один правильний, на Вашу думку, варіант відповіді, позначений буквою/номером. Для цього натисніть курсором на нього, а потім — на порожнє поле навпроти інформації, позначеної цифрою. Виберіть новий варіант відповіді. Після остаточного вибору НАДІШЛІТЬ відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+        if(q.id === 28) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Завдання 28–30 мають по сім варіантів відповіді, з яких лише ТРИ правильні. Виберіть правильні, на Вашу думку, варіанти відповідей і натисніть курсором на значки <input type="checkbox" disabled>. Ви можете замінити дібрані варіанти відповідей на інші. Остаточні варіанти відповідей, позначені Вами <input type="checkbox" checked disabled>, НАДІШЛІТЬ, натиснувши курсором на кнопку під завданням.</div>`;
+      }
+        else if (currentSub === 'ukr') { 
+          if (q.id === 1) { headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Завдання 1–20 мають по чотири варіанти відповіді, з яких лише один правильний. Виберіть правильний варіант, на Вашу думку, і натисніть «Зберегти відповідь».</div>`; } 
+		      else if (q.id === 21) { 
+            headerText = `<div class="intro-card" style="text-align: left; background: #fdfdfd; border: 1px solid #bbb; padding: 25px 40px; border-radius: 4px; line-height: 1.9; color: #333;">
+                <p style="text-align:center; font-weight:700; margin-top:0; font-size: 1.1rem;">Завдання 21-25 стосуються речень, що первісно становили зв'язаний текст. Прочитайте речення й виконайте завдання до них</p>
+                <span style="font-size: 1.2rem;">Δ</span> <i>Ці безпечні <b>простори</b>, як і попередній, створено насамперед для дітей, облаштовано під їхні потреби.</i><br>
+                <span style="font-size: 1.2rem;">○</span> <i>Ще два соціальні <b>хаби</b>, дружні до матері та дитини, відтепер працюють на Одещині.</i><br>
+                <span style="font-size: 1.2rem;">◇</span> <i>А поки діти граються чи навчаються, дорослі можуть отримати допомогу соціального менеджера, юриста, психолога та інші <b>послуги</b>.</i><br>
+                <span style="font-size: 1.2rem;">□</span> <i>У затишній атмосфері, з уважними вихователями та психологом, діти зможуть перебувати деякий <b>час</b> поки батьки вирішуватимуть свої справи.</i><br>
+                <span style="font-size: 1.2rem;">▽</span> <i>Маленьким відвідувачам пропонують цікаві <b>заняття</b>, розвивальні ігри, малювання, майстер-класи.</i>
+            </div>`; 
+          }
+		      else if (q.id === 26) { headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fff; padding: 20px 30px; border-radius: 4px; text-align: left; line-height: 1.6; font-weight: 700; font-size: 1rem; color: #000;">У завданнях 26–30 до кожного із чотирьох фрагментів інформації, позначених цифрою, доберіть один правильний, на Вашу думку, варіант, позначений буквою. Поставте позначки в таблицях відповідей до завдань на перетині відповідних рядків (цифри) і колонок (букви).</div>`; } 
+        }
+        else if (currentSub === 'bio') {
+          if(q.id === 1) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Завдання 1– 24 мають по чотири варіанти відповіді, з яких лише один правильний. Виберіть правильний, на Вашу думку, варіант відповіді й натисніть курсором на значок <span class="radio-icon"></span>. Ви можете замінити дібраний варіант відповіді на інший. Позначений Вами остаточний варіант відповіді <span class="radio-icon active"></span> НАДІШЛІТЬ, натиснувши курсором на кнопку под завданням.</div>`;
+          if(q.id === 22) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">Бджола живиться нектаром квітів. У результаті тривалої спільної еволюції ротовий апарат бджоли виявився за будовою ідеально «підігнаним» до квіток комахозапильних рослин, які, у свою чергу, пристосовані до приваблювання запилювачів. Ротовий апарат бджоли пристосований для одночасного розмелювання твердого квіткового пилку та висмоктування нектару. Оптимальною для виділення нектару рослинами вважається середньодобова температура від + 16 °С до + 25 °С. При температурі нижче + 10 °С і вище + 30 °C виділення нектару більшістю рослин припиняється.</div>`;
+          if(q.id === 29) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">У завданнях 29 і 30 до кожного з трьох фрагментів інформації доберіть із випадного списку один правильний, на Вашу думку, варіант відповіді. Ви можете замінити вибраний варіант відповіді на інший. Після остаточного вибору ЗБЕРЕЖІТЬ відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+          if(q.id === 25) headerText = `<div class="intro-card" style="margin-bottom: 20px; border: 1px solid #bbb; background: #fdfdfd; padding: 25px 40px; border-radius: 4px; text-align: center; line-height: 1.8; font-weight: 500; font-size: 0.95rem; color: #333;">У завданнях на встановлення відповідності до кожного з фрагментів інформації, позначених цифрами, доберіть один правильний, на Вашу думку, варіант відповіді, позначений буквою/номером. Для цього натисніть курсором на нього, а потім — на порожнє поле навпроти інформації, позначеної цифрою. Виберіть новий варіант відповіді. Після остаточного вибору НАДІШЛІТЬ відповідь, натиснувши курсором на кнопку під завданням.</div>`;
+     
+	 }
+
+
+// 3. ЛОГІКА ВАРІАНТІВ ВІДПОВІДІ
+let optsHtml = "";
+
+if (q.type === 'match' || q.type === 'sequence') {
+    // Динамічні заголовки: беремо з q.labels або ставимо порожньо
+    // Приклад у даних: labels: ["Функція", "Кількість точок"]
+    let labelLeft = (q.labels && q.labels[0]) ? q.labels[0] : "";
+    let labelRight = (q.labels && q.labels[1]) ? q.labels[1] : "";
+
+    const usedIndices = q.selected.filter(idx => idx !== null);
+
+    optsHtml = `
+    <div class="matching-container" style="width: 100%; max-width: 1000px; margin: 20px 0; font-family: sans-serif;">
+        
+        <div style="display: flex; margin-bottom: 10px; font-style: italic; font-size: 0.9rem; color: #333;">
+            <div style="flex: 1; padding-left: 10px;">${labelLeft}</div>
+            <div style="flex: 1; padding-left: 45px;">${labelRight}</div>
+        </div>
+
+        <div style="display: flex; gap: 20px; align-items: flex-start;">
+            
+            <div style="flex: 2; background: #e0f7ff; border: 1px solid #b2ebf2; border-radius: 10px; padding: 15px;">
+                ${q.rows.map((r, rIdx) => {
+                    const selIdx = q.selected[rIdx];
+                    const isSelected = selIdx !== null;
+                    return `
+                    <div style="display: flex; align-items: stretch; margin-bottom: 15px; gap: 10px;">
+                        
+                        <div style="flex: 1; background: #c2e9fb; border: 1px solid #a3d9f5; border-radius: 6px; padding: 12px 15px; display: flex; align-items: center; min-height: 40px;">
+                            <span style="line-height: 1.4;"><b>${rIdx+1}.</b> ${r}</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; color: #82b1ff; font-size: 18px;">→</div>
+                        
+                        <div class="matching-drop-field ${activeMatch?.q===i && activeMatch?.r===rIdx ? 'active' : ''}" 
+                             onclick="window.setActiveMatch(${i}, ${rIdx})"
+                             style="flex: 1.3; min-height: 40px; background: ${isSelected ? '#b2f29b' : '#fff'}; 
+                                    border: 2px solid ${activeMatch?.q===i && activeMatch?.r===rIdx ? '#4a90e2' : (isSelected ? '#90d87a' : '#ddd')}; 
+                                    border-radius: 6px; display: flex; align-items: center; padding: 10px 40px 10px 12px; cursor: pointer; position: relative;">
+                            
+                            <span style="font-size: 0.95rem; line-height: 1.4; word-break: break-word;">
+                                ${isSelected ? `<b>${['А','Б','В','Г','Д'][selIdx]}.</b> ${q.cols[selIdx].replace(/^[А-Д]\.\s*/, '')}` : ''}
+                            </span>
+                            
+                            ${isSelected ? `
+                                <div onclick="event.stopPropagation(); window.clearMatch(${i}, ${rIdx})" 
+                                     style="position: absolute; right: 8px; top: 10px; width: 22px; height: 22px; border: 1px solid #999; border-radius: 4px; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #333; font-weight: bold;">✕</div>
+                            ` : ''}
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>
+
+            <div style="flex: 0.8; background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 10px; padding: 15px; min-height: 200px;">
+                ${q.cols.map((c, cIdx) => {
+                    if (usedIndices.includes(cIdx)) return '';
+                    return `
+                    <div class="matching-opt-btn" onclick="window.applyMatch(${cIdx})"
+                         style="background: #b2f29b; border: 1px solid #90d87a; border-radius: 6px; padding: 10px 12px; 
+                                cursor: pointer; font-size: 0.9rem; text-align: left; margin-bottom: 10px; line-height: 1.4;">
+                        <b>${['А','Б','В','Г','Д'][cIdx]}.</b> ${c.replace(/^[А-Д]\.\s*/, '')}
+                    </div>`;
+                }).join('')}
+            </div>
+        </div>
+    </div>`;
+}
+        // ТИП 2: Мультивибір (3 з 7)
+        else if (q.type === 'multi') {
+            optsHtml = q.opts.map((o, oi) => `
+                <label class="option-item">
+                    <input type="checkbox" ${q.selected.includes(oi) ? 'checked' : ''} onchange="toggleMulti(${i}, ${oi})"> ${o}
+                </label>`).join('');
+        } 
+        // ТИП 3: Введення тексту/числа
+        else if (q.type === 'input') {
+          optsHtml = `
+              <div class="input-answer-box">
+                  <p style="font-weight:500;">Упишіть відповідь:</p>
+                  <div class="answer-field-wrapper">
+                      <input type="text" 
+                             id="input-f-${i}" 
+                             class="input-q-field" 
+                             value="${q.selected || ''}" 
+                             oninput="window.updateInputValue(${i}, this.value)"
+                             style="padding: 10px; width: 100%; border: 1px solid #000000; border-radius: 8px;">
+                  </div>
+              </div>`;
+        }
+       
+else if (q.type === 'multiselect') {
+    optsHtml = q.cases.map((c, ci) => `
+        <div style="margin-bottom: 20px; text-align: left;">
+            <p style="margin-bottom: 8px; font-weight: 500;">${c.label}</p>
+            <select onchange="updateMultiSelect(${i}, ${ci}, this.value)" 
+                    style="padding: 10px; width: 350px; max-width: 100%; border: 1px solid #ccc; border-radius: 8px; background: #fff;">
+                <option value="">Оберіть опцію</option>
+                ${c.opts.map((opt, oi) => `
+                    <option value="${oi}" ${q.selected && q.selected[ci] === oi ? 'selected' : ''}>${opt}</option>
+                `).join('')}
+            </select>
+        </div>
+    `).join('');
+}
+
+
+	   // ТИП 4: Звичайні тести
+        else {
+            optsHtml = q.opts.map((o, oi) => `
+                <label class="option-item">
+                    <input type="radio" name="q${i}" ${q.selected === oi ? 'checked' : ''} onchange="selectOpt(${i}, ${oi})"> ${o}
+                </label>`).join('');
+        }
+
+        // 4. ПОВЕРНЕННЯ ФІНАЛЬНОЇ КАРТКИ
+        return headerText + `<div class="card" id="card-${i}">
+            <div style="font-weight:700; margin-bottom:15px; color: #333;">Завдання ${q.id}.</div>
+            ${qLayout} 
+            <div style="margin-top:20px;">${optsHtml}</div>
+            <button class="btn-save ${q.saved ? 'saved' : ''}" onclick="save(${i})">
+                ${q.saved ? 'Зберегти відповідь' : 'Зберегти відповідь'}
+            </button>
+        </div>`;
+    }).join('');
+    
+    if (window.MathJax) MathJax.typesetPromise();
+    renderNav();
+}
+
+// Додай цю функцію, щоб кліки по сітці працювали (якщо її немає)
+window.applyMatch = (qIdx, rowIdx, colIdx) => {
+    data[currentSub][qIdx].selected[rowIdx] = colIdx;
+    data[currentSub][qIdx].saved = false;
+    render();
+};
+
+// --- ФУНКЦІЇ КЛІКІВ ТА ОБРОБКИ ---
+window.setActiveMatch = (qIdx, rIdx) => { activeMatch = { q: qIdx, r: rIdx }; render(); };
+window.applyMatch = (cIdx) => { if (activeMatch) { data[currentSub][activeMatch.q].selected[activeMatch.r] = cIdx; data[currentSub][activeMatch.q].saved = false; render(); } };
+window.clearMatch = (qIdx, rIdx) => { data[currentSub][qIdx].selected[rIdx] = null; data[currentSub][qIdx].saved = false; render(); };
+window.selectOpt = (i, oi) => { data[currentSub][i].selected = oi; data[currentSub][i].saved = false; render(); };
+window.updateInputValue = (i, val) => { data[currentSub][i].selected = val; data[currentSub][i].saved = false; };
+window.selectDropdown = (i, val) => { data[currentSub][i].selected = val === "" ? null : parseInt(val); data[currentSub][i].saved = false; render(); };
+
+function toggleMulti(i, oi) {
+    const q = data[currentSub][i];
+    if (q.selected.includes(oi)) { q.selected = q.selected.filter(x => x !== oi); }
+    else { if (q.selected.length < 3) q.selected.push(oi); }
+    q.saved = false; render();
+}
+
+function renderNav() {
+    document.getElementById('n-grid').innerHTML = data[currentSub].map((q, i) => `<div class="nav-num ${q.saved?'red':''}" onclick="document.getElementById('card-${i}').scrollIntoView({behavior:'smooth'})">${q.id}</div>`).join('');
+}
+
+function showFinishModal() {
+    const unsaved = Object.values(data).flat().filter(q => !q.saved);
+    const countEl = document.getElementById('unsaved-list-count');
+    if(countEl) countEl.innerHTML = `Не збережено завдань: ${unsaved.length}`;
+    document.getElementById('unsaved-list-inner').innerHTML = unsaved.map(q => `<div>Завдання ${q.id}</div>`).join('');
+    document.getElementById('finish-overlay').style.display = 'flex';
+}
+
+function goToResults() {
+    document.getElementById('test-page').style.display = 'none';
+    document.getElementById('finish-overlay').style.display = 'none';
+    document.getElementById('result-page').style.display = 'flex';
+    
+    const subjects = [
+        { key: 'ukr', label: 'Українська мова' },
+        { key: 'math', label: 'Математика' },
+        { key: 'bio', label: 'Біологія' },
+        { key: 'hist', label: 'Історія України' }
+    ];
+
+    document.getElementById('res-body').innerHTML = subjects.map(sub => {
+        if (!data[sub.key]) return '';
+        let score = 0;
+
+        data[sub.key].forEach(q => { 
+            if (q.saved) { 
+                if (q.type === 'match') { 
+                    q.selected.forEach((val, idx) => { if (val === q.correct[idx]) score++; }); 
+                } 
+                else if (q.type === 'sequence') { 
+                    const all = q.selected.every((v, i) => v === q.correct[i]); 
+                    if (all) score += 3; 
+                    else if (q.selected[0] === q.correct[0] && q.selected[3] === q.correct[3]) score += 2; 
+                    else if (q.selected[0] === q.correct[0] || q.selected[3] === q.correct[3]) score += 1; 
+                } 
+                else if (q.type === 'multi') { 
+                    q.selected.forEach(val => { if (q.correct.includes(val)) score++; }); 
+                }
+                else if (q.type === 'input') { 
+                    if (q.selected.toString().trim() === q.correct) score += 2; 
+                } 
+              
+                else if (q.type === 'multiselect') {
+                    q.cases.forEach((c, idx) => {
+                        if (q.selected[idx] === c.correct) score++;
+                    });
+                }
+			  else { 
+                    if (q.selected === q.correct) score++; 
+                } 
+            } 
+        });
+        let displayScore = isSecondStage ? score : "—";
+        
+        return `<tr>
+            <td>${sub.label}</td>
+            <td>${data[sub.key].filter(q=>q.saved).length} з ${data[sub.key].length}</td>
+            <td class="bg-green">${displayScore}</td>
+        </tr>`;
+    }).join('');
+
+    const footer = document.querySelector('.res-footer');
+    const title = document.querySelector('.res-title');
+    if (title) title.textContent = "Ви дочасно завершили роботу над тестом";
+    if (footer) footer.innerHTML = "© Всі права захищено";
+}
+
+window.updateInputValue = (idx, val) => {
+    const q = data[currentSub][idx];
+    q.selected = val; 
+    q.saved = false;
+};
+
+
+window.updateMultiSelect = (qIdx, caseIdx, val) => {
+    const q = data[currentSub][qIdx];
+    if (!q.selected) q.selected = [null, null, null];
+    q.selected[caseIdx] = val === "" ? null : parseInt(val);
+    q.saved = false;
+};
+
+window.save = (i) => { 
+    const q = data[currentSub][i];
+    
+    if (q.type === 'multi') {
+        if (q.selected.length === 3) {
+            q.saved = true;
+        }
+    }
+    else if (q.type === 'match' || q.type === 'sequence') {
+        if (q.selected.every(v => v !== null)) {
+            q.saved = true;
+        }
+    }
+    else if (q.type === 'input') {
+        const inputEl = document.getElementById(`input-f-${i}`);
+        const val = inputEl ? inputEl.value.trim() : "";
+        if (val !== "") {
+            q.selected = val; 
+            q.saved = true;
+        }
+    }
+    // ДОДАНИЙ БЛОК ТУТ
+    else if (q.type === 'multiselect') {
+        if (q.selected && q.selected.length === 3 && q.selected.every(v => v !== null)) {
+            q.saved = true;
+        }
+    }
+    // ФІНАЛЬНИЙ БЛОК ДЛЯ ЗВИЧАЙНИХ ТЕСТІВ
+    else {
+        if (q.selected !== null) {
+            q.saved = true;
+        }
+    }
+    render();
+};
+
+window.returnToSelection = function() {
+    document.getElementById('result-page').style.display = 'none';
+    document.getElementById('confirm-page').style.display = 'flex';
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+};
+
+</script>
+</body>
+</html>
